@@ -1,4 +1,4 @@
-import { Rating } from '../ratings/rating.entity';
+import { Tether } from '../tethers/tether.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -17,6 +17,9 @@ export class User {
   @Column({ nullable: false, unique: true })
   username: string;
 
+  @Column({ nullable: false, unique: true })
+  email: string;
+
   @Column({ nullable: false })
   password: string;
 
@@ -25,15 +28,27 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  @Column({ nullable: false, unique: true })
-  email: string;
+  @OneToMany(() => Tether, (tether) => tether.id)
+  tethers: Tether[];
+
+  @Column({ nullable: false })
+  tethers_ongoing: number;
+
+  @Column({ nullable: false })
+  tethers_completed: number;
+
+  // @OneToMany(() => Friend, (friend) => friend.id)
+  // friends: Friend[];
 
   @CreateDateColumn()
-  created_at?: Date;
+  created_on?: Date;
 
   @CreateDateColumn()
-  updated_at?: Date;
+  updated_on?: Date;
 
-  @OneToMany(() => Rating, (rating) => rating.user)
-  ratings: Rating[];
+  @Column({ nullable: false })
+  xp: number;
+
+  // @OneToMany(() => Rating, (rating) => rating.user)
+  // ratings: Rating[];
 }

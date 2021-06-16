@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { RatingsModule } from './ratings/ratings.module';
+import { TethersModule } from './tethers/tethers.module';
 
 @Module({
   imports: [
@@ -32,7 +32,7 @@ import { RatingsModule } from './ratings/ratings.module';
     }),
     AuthModule,
     UsersModule,
-    RatingsModule,
+    TethersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

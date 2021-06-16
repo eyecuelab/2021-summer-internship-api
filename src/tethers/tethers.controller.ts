@@ -10,29 +10,29 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CreateRatingDto } from './dto/createRating.dto';
-import { RatingsService } from './ratings.service';
+import { CreateTetherDto } from './dto/createTether.dto';
+import { TethersService } from './tethers.service';
 
 @ApiBearerAuth()
-@Controller('ratings')
-export class RatingsController {
-  constructor(private readonly ratingsService: RatingsService) {}
+@Controller('tethers')
+export class TethersController {
+  constructor(private readonly tethersService: TethersService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
   async find(@Request() req) {
-    return this.ratingsService.find(req.user.id);
+    return this.tethersService.find(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Request() req, @Param('id', ParseUUIDPipe) id: string) {
-    return this.ratingsService.findOne(id, req.user.id);
+    return this.tethersService.findOne(id, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Request() req, @Body() createRatingDto: CreateRatingDto) {
-    return this.ratingsService.create(createRatingDto, req.user);
+  async create(@Request() req, @Body() createTetherDto: CreateTetherDto) {
+    return this.tethersService.create(createTetherDto, req.user);
   }
 }
