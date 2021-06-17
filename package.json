@@ -20,7 +20,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json --runInBand",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -f ./ormconfig-migrations.ts",
+    "migration-generate": "yarn run typeorm:cli migration:generate -n",
+    "migration-run": "yarn run typeorm:cli migration:run"
   },
   "dependencies": {
     "-": "^0.0.1",
