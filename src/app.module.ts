@@ -26,8 +26,8 @@ import { TethersModule } from './tethers/tethers.module';
             ? 'test-test'
             : configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{ .ts,.js}'],
-        autoLoadEntities: process.env.NODE_ENV === 'test',
-        synchronize: process.env.NODE_ENV === 'test',
+        autoLoadEntities: true,
+        synchronize: true,
       }),
     }),
     AuthModule,
