@@ -19,18 +19,18 @@ export class UsersService {
     });
   }
 
-  // async findOne(attributes: Partial<User>): Promise<User | undefined> {
-  //   const options: FindOneOptions<User> = {
-  //     where: {
-  //       ...attributes,
-  //     },
-  //   };
-  //   const user = await this.usersRepository.findOne(options);
-  //   delete user.password;
-  //   return user;
-  // }
+  async findOne(attributes: Partial<User>): Promise<User | undefined> {
+    const options: FindOneOptions<User> = {
+      where: {
+        ...attributes,
+      },
+    };
+    const user = await this.usersRepository.findOne(options);
+    delete user.password;
+    return user;
+  }
 
-  async findOne(id: string): Promise<User | undefined> {
+  async findById(id: string) {
     return this.usersRepository.findOne({
       where: {
         id: id,
@@ -38,10 +38,10 @@ export class UsersService {
     });
   }
 
-  async findByUsername(username: string) {
+  async findByUsername(username: string): Promise<User | undefined> {
     return this.usersRepository.findOne({
       where: {
-        username,
+        username: username,
       },
     });
   }
