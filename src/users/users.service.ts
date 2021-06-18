@@ -29,15 +29,13 @@ export class UsersService {
   //   delete user.password;
   //   return user;
   // }
-  async findOne(attributes: Partial<User>): Promise<User | undefined> {
-    const options: FindOneOptions<User> = {
+
+  async findOne(id: string): Promise<User | undefined> {
+    return this.usersRepository.findOne({
       where: {
-        ...attributes,
+        id: id,
       },
-    };
-    const user = await this.usersRepository.findOne(options);
-    delete user.password;
-    return user;
+    });
   }
 
   async findByUsername(username: string) {

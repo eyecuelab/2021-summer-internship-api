@@ -2,10 +2,10 @@ import {
   // Body,
   Controller,
   Get,
-  // Param,
-  // ParseUUIDPipe,
+  Param,
+  ParseUUIDPipe,
   // Post,
-  // Request,
+  Request,
   // UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -26,10 +26,10 @@ export class UsersController {
   }
 
   // @UseGuards(JwtAuthGuard)
-  // @Get(':id')
-  // async findOne(@Request() req, @Param('id', ParseUUIDPipe) id: string) {
-  //   return this.usersService.findOne(id, req.user.id);
-  // }
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.usersService.findOne(id);
+  }
 
   // @UseGuards(JwtAuthGuard)
   // @Post()
