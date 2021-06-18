@@ -32,10 +32,10 @@ export class UsersController {
     return this.usersService.findById(id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string) {
-    return `test update ID ${id}`;
-  }
+  // @Put(':id')
+  // update(@Param('id') id: string) {
+  //   return `test update ID ${id}`;
+  // }
 
   // @UseGuards(JwtAuthGuard)
   // @Get(':username')
