@@ -31,10 +31,10 @@ export class User {
   @OneToMany(() => Tether, (tether) => tether.id)
   tethers: Tether[];
 
-  @Column()
+  @Column({ nullable: true })
   tethers_ongoing: number;
 
-  @Column()
+  @Column({ nullable: true })
   tethers_completed: number;
 
   // @OneToMany(() => Friend, (friend) => friend.id)
@@ -46,7 +46,7 @@ export class User {
   @CreateDateColumn()
   updated_on?: Date;
 
-  @Column()
+  @Column({ nullable: true })
   xp: number;
 
   // @OneToMany(() => Rating, (rating) => rating.user)
