@@ -1,13 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
   Patch,
   // Post,
-  Put,
-  Request,
+  // Request,
   // UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -22,36 +22,42 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // Get All Users
   // @UseGuards(JwtAuthGuard)
-  @Get('/all')
+  @Get('/')
   findAll(): Promise<User[]> {
     return this.usersService.getAllUsers();
   }
 
+  // Get One User by ID
   // @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findById(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findById(id);
   }
 
+  // Get One User by Username (not totally cooperating but likely unnecessary)
+  // @UseGuards(JwtAuthGuard)
+  // @Get(':username')
+  // async findByUsername(@Param('username') username: string): Promise<User> {
+  //   return this.usersService.findOne({
+  //     username,
+  //   });
+  // }
+
+  // Edit One User by Id
+  // @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() userParams: UpdateUserDto,
   ) {
     return this.usersService.updateOne(id, userParams);
-    // return `test update ID ${id}`;
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get(':username')
-  // async findByUsername(@Param('username') username: string): Promise<User> {
-  //   return this.usersService.findOne({ username });
-  // }
-
-  // @UseGuards(JwtAuthGuard)
-  // @Post()
-  // async create(@Request() req, @Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto, req.user);
-  // }
+  // Delete User by ID
+  @Delete(':id')
+  async deleteUser(@Param('id', ParseUUIDPipe) id: string) {
+    return this.usersService.deleteUser(id);
+  }
 }
