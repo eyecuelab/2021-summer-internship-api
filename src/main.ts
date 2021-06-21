@@ -12,6 +12,7 @@ async function bootstrap() {
   app.use(helmet());
   app.enableCors();
 
+  // OPEN API Docs
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Api Example')
@@ -21,7 +22,9 @@ async function bootstrap() {
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
   SwaggerModule.setup('docs', app, document);
+
   const configService = app.get(ConfigService);
   const port = configService.get('PORT');
   await app.listen(port);
