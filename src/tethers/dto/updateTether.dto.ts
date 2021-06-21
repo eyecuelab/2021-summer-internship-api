@@ -1,41 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  IsDate,
-  IsNumber,
-  IsEnum,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsEnum } from 'class-validator';
 import { TetherDuration } from '../tether-duration.enum';
 
-export class CreateTetherDto {
+export class UpdateTetherDto {
   // @ApiProperty()
   // @IsNotEmpty()
   // @IsUrl()
   // readonly pictureURL: string;
 
   // ---
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  // @ApiProperty()
-  // @Type(() => Date)
-  // @IsDate()
-  // completed_on?: Date;
-
-  // @ApiProperty()
-  // @Type(() => Date)
-  // @IsDate()
-  // full_on?: Date;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  created_by: string;
-
   @ApiProperty()
   @IsNotEmpty()
   @IsString()

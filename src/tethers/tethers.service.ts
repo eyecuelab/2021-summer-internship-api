@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTetherDto } from './dto/createTether.dto';
 import { Repository } from 'typeorm';
 import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
+import { UpdateTetherDto } from './dto/updateTether.dto';
 
 @Injectable()
 export class TethersService {
@@ -37,6 +38,22 @@ export class TethersService {
     await this.tethersRepository.save(newTether);
     return newTether;
   }
-}
 
-// , user: Omit<User, 'password'>
+  async updateOne(id: string, userData: Partial<UpdateTetherDto>) {
+    const { affected } = await this.tethersRepository.update(id, userData);
+    if (affected === 0) {
+      return new NotFoundException('');
+    }
+    const tether = await this.find(id);
+    return tether;
+  }
+
+  async deleteTether(id: string): Promise<void> {
+    const result = await this.tethersRepository.delete({ id });
+
+    if (result.affected === 0) {
+      // Possibly redact this info to prevent unauthorized guessing
+      throw new NotFoundException(`Tether with ID ${id} not found.`);
+    }
+  }
+}
