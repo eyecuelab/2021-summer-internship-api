@@ -15,17 +15,18 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateTetherDto } from './dto/createTether.dto';
 import { UpdateTetherDto } from './dto/updateTether.dto';
 import { TethersService } from './tethers.service';
+import { Tether } from './tether.entity';
 
-@ApiBearerAuth()
+// @ApiBearerAuth()
 @Controller('tethers')
 export class TethersController {
   constructor(private readonly tethersService: TethersService) {}
 
   // Get all Tethers
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async find(@Request() req) {
-    return this.tethersService.find(req.user.id);
+  // @UseGuards(JwtAuthGuard)
+  @Get('/')
+  findAll(): Promise<Tether[]> {
+    return this.tethersService.getAllTethers();
   }
 
   // Get one Tether by ID

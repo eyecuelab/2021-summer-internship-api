@@ -21,6 +21,13 @@ export class TethersService {
     });
   }
 
+  async getAllTethers(): Promise<Tether[]> {
+    const user = await this.tethersRepository
+      .createQueryBuilder('users')
+      .getMany();
+    return user;
+  }
+
   async findOne(id: string, userId: string): Promise<Tether | undefined> {
     return this.tethersRepository.findOne({
       where: {
