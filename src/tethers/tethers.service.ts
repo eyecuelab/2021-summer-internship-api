@@ -44,7 +44,6 @@ export class TethersService {
       query.andWhere('(LOWER(tethers.created_by) LIKE LOWER(:created_by))', {
         created_by: `%${created_by}%`,
       });
-      console.log(query);
     }
 
     try {
