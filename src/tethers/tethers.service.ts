@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTetherDto } from './dto/createTether.dto';
 import { Repository } from 'typeorm';
 import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
 import { UpdateTetherDto } from './dto/updateTether.dto';
+import { GetTethersFilterDto } from './dto/getTethersFilter.dto';
 
 @Injectable()
 export class TethersService {
@@ -23,9 +28,31 @@ export class TethersService {
 
   async getAllTethers(): Promise<Tether[]> {
     const user = await this.tethersRepository
-      .createQueryBuilder('users')
+      .createQueryBuilder('tethers')
       .getMany();
     return user;
+  }
+
+  async getAllTethersFiltered(
+    filterDto: GetTethersFilterDto,
+  ): Promise<Tether[]> {
+    const { created_by } = filterDto;
+
+    const query = this.tethersRepository.createQueryBuilder('tethers');
+
+    if (created_by) {
+      query.andWhere('(LOWER(tethers.created_by) LIKE LOWER(:created_by))', {
+        created_by: `%${created_by}%`,
+      });
+      console.log(query);
+    }
+
+    try {
+      const tethers = await query.getMany();
+      return tethers;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   async findOne(id: string, userId: string): Promise<Tether | undefined> {

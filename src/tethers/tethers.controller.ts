@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { CreateTetherDto } from './dto/createTether.dto';
 import { UpdateTetherDto } from './dto/updateTether.dto';
 import { TethersService } from './tethers.service';
 import { Tether } from './tether.entity';
+import { GetTethersFilterDto } from './dto/getTethersFilter.dto';
 
 // @ApiBearerAuth()
 @Controller('tethers')
@@ -24,9 +26,14 @@ export class TethersController {
 
   // Get all Tethers
   // @UseGuards(JwtAuthGuard)
+  // @Get('/')
+  // findAll(): Promise<Tether[]> {
+  //   return this.tethersService.getAllTethers();
+  // }
+
   @Get('/')
-  findAll(): Promise<Tether[]> {
-    return this.tethersService.getAllTethers();
+  getTasks(@Query() filterDto: GetTethersFilterDto): Promise<Tether[]> {
+    return this.tethersService.getAllTethersFiltered(filterDto);
   }
 
   // Get one Tether by ID
