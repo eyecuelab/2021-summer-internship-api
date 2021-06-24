@@ -67,6 +67,8 @@ export class TethersService {
     const newTether = await this.tethersRepository.create({
       ...tetherData,
       user,
+      name: `${tetherData.action} ${tetherData.quantity} ${tetherData.noun} ${tetherData.duration}`,
+      created_by: `${user.username}`,
     });
     await this.tethersRepository.save(newTether);
     return newTether;
