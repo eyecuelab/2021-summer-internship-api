@@ -12,21 +12,21 @@ export class UpdateTetherDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  action: string;
+  tether_action: string;
 
   @ApiProperty()
   @IsNumber()
-  quantity: number;
+  tether_quantity: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  noun: string;
+  tether_noun: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsEnum(TetherDuration)
-  duration: TetherDuration;
+  tether_duration: TetherDuration;
   // ---
 
   // @ApiProperty()

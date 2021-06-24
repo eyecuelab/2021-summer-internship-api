@@ -11,7 +11,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+// import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateTetherDto } from './dto/createTether.dto';
 import { UpdateTetherDto } from './dto/updateTether.dto';
@@ -38,31 +38,37 @@ export class TethersController {
 
   // Get one Tether by ID
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async findOne(@Request() req, @Param('id', ParseUUIDPipe) id: string) {
-    return this.tethersService.findOne(id, req.user.id);
+  @Get(':tether_id')
+  async findOne(
+    @Request() tether_req,
+    @Param('tether_id', ParseUUIDPipe) tether_id: string,
+  ) {
+    return this.tethersService.findOne(tether_id, tether_req.user.id);
   }
 
   // Create a Tether
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Request() req, @Body() createTetherDto: CreateTetherDto) {
-    return this.tethersService.create(createTetherDto, req.user);
+  async create(
+    @Request() tether_req,
+    @Body() createTetherDto: CreateTetherDto,
+  ) {
+    return this.tethersService.create(createTetherDto, tether_req.user);
   }
 
   // Edit one Tether by Id
   // @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @Patch(':tether_id')
   async update(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('tether_id', ParseUUIDPipe) tether_id: string,
     @Body() userParams: UpdateTetherDto,
   ) {
-    return this.tethersService.updateOne(id, userParams);
+    return this.tethersService.updateOne(tether_id, userParams);
   }
 
   // Delete Tether by ID
-  @Delete(':id')
-  async deleteUser(@Param('id', ParseUUIDPipe) id: string) {
-    return this.tethersService.deleteTether(id);
+  @Delete(':tether_id')
+  async deleteUser(@Param('tether_id', ParseUUIDPipe) tether_id: string) {
+    return this.tethersService.deleteTether(tether_id);
   }
 }
