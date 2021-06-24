@@ -28,7 +28,7 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  @OneToMany(() => Tether, (tether) => tether.id)
+  @OneToMany(() => Tether, (tether) => tether.tether_id)
   tethers: Tether[];
 
   @Column({ nullable: true })

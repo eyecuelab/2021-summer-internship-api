@@ -67,26 +67,34 @@ export class TethersService {
     const newTether = await this.tethersRepository.create({
       ...tetherData,
       user,
+      tether_name: `${tetherData.tether_action} ${tetherData.tether_quantity} ${tetherData.tether_noun} ${tetherData.tether_duration}`,
+      tether_created_by: `${user.username}`,
     });
     await this.tethersRepository.save(newTether);
     return newTether;
   }
 
-  async updateOne(id: string, userData: Partial<UpdateTetherDto>) {
-    const { affected } = await this.tethersRepository.update(id, userData);
+  async updateOne(
+    tether_id: string,
+    tether_userData: Partial<UpdateTetherDto>,
+  ) {
+    const { affected } = await this.tethersRepository.update(
+      tether_id,
+      tether_userData,
+    );
     if (affected === 0) {
       return new NotFoundException('');
     }
-    const tether = await this.find(id);
+    const tether = await this.find(tether_id);
     return tether;
   }
 
-  async deleteTether(id: string): Promise<void> {
-    const result = await this.tethersRepository.delete({ id });
+  async deleteTether(tether_id: string): Promise<void> {
+    const result = await this.tethersRepository.delete({ tether_id });
 
     if (result.affected === 0) {
       // Possibly redact this info to prevent unauthorized guessing
-      throw new NotFoundException(`Tether with ID ${id} not found.`);
+      throw new NotFoundException(`Tether with ID ${tether_id} not found.`);
     }
   }
 }

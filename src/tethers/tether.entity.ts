@@ -11,35 +11,35 @@ import { TetherDuration } from './tether-duration.enum';
 @Entity('tether')
 export class Tether {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  tether_id: string;
 
   @Column('text')
-  name: string;
+  tether_name: string;
 
   @CreateDateColumn()
-  opened_on?: Date;
+  tether_opened_on?: Date;
 
   @CreateDateColumn()
-  completed_on?: Date;
+  tether_completed_on?: Date;
 
   @CreateDateColumn()
-  full_on?: Date;
+  tether_full_on?: Date;
 
   @Column('text')
-  created_by: string;
+  tether_created_by: string;
 
   @ManyToOne(() => User, (user) => user.tethers)
   user: User;
 
   @Column('text')
-  action: string;
+  tether_action: string;
 
   @Column('int')
-  quantity: number;
+  tether_quantity: number;
 
   @Column('text')
-  noun: string;
+  tether_noun: string;
 
   @Column()
-  duration: TetherDuration;
+  tether_duration: TetherDuration;
 }
