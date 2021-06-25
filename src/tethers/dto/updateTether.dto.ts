@@ -3,12 +3,6 @@ import { IsNotEmpty, IsString, IsNumber, IsEnum } from 'class-validator';
 import { TetherDuration } from '../tether-duration.enum';
 
 export class UpdateTetherDto {
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // @IsUrl()
-  // readonly pictureURL: string;
-
-  // ---
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -27,14 +21,4 @@ export class UpdateTetherDto {
   @IsNotEmpty()
   @IsEnum(TetherDuration)
   tether_duration: TetherDuration;
-  // ---
-
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // readonly date: string;
-
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // @IsString()
-  // readonly tether: string;
 }

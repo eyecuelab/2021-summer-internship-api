@@ -71,7 +71,6 @@ export class TethersService {
       tether_created_by: `${user.username}`,
     });
     await this.tethersRepository.save(newTether);
-    // return this.getAllTethers();
     return newTether;
   }
 
