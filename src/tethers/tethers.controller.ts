@@ -53,7 +53,8 @@ export class TethersController {
     @Request() tether_req,
     @Body() createTetherDto: CreateTetherDto,
   ) {
-    return this.tethersService.create(createTetherDto, tether_req.user);
+    this.tethersService.create(createTetherDto, tether_req.user);
+    return this.tethersService.getAllTethers();
   }
 
   // Edit one Tether by Id
