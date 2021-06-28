@@ -28,6 +28,9 @@ export class Tether {
   @Column('text')
   tether_created_by: string;
 
+  @Column('text')
+  tether_created_by_plain: string;
+
   @ManyToOne(() => User, (user) => user.tethers)
   user: User;
 

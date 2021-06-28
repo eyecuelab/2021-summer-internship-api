@@ -36,14 +36,17 @@ export class TethersService {
   async getAllTethersFiltered(
     filterDto: GetTethersFilterDto,
   ): Promise<Tether[]> {
-    const { created_by } = filterDto;
+    const { tether_created_by } = filterDto;
 
     const query = this.tethersRepository.createQueryBuilder('tethers');
 
-    if (created_by) {
-      query.andWhere('(LOWER(tethers.created_by) LIKE LOWER(:created_by))', {
-        created_by: `%${created_by}%`,
-      });
+    if (tether_created_by) {
+      query.andWhere(
+        '(LOWER(tethers.tether_created_by) LIKE LOWER(:tether_created_by))',
+        {
+          tether_created_by: `%${tether_created_by}%`,
+        },
+      );
     }
 
     try {
@@ -68,7 +71,8 @@ export class TethersService {
       ...tetherData,
       user,
       tether_name: `${tetherData.tether_action} ${tetherData.tether_quantity} ${tetherData.tether_noun} ${tetherData.tether_duration}`,
-      tether_created_by: `${user.username}`,
+      tether_created_by: `${user.id}`,
+      tether_created_by_plain: `${user.username}`,
     });
     await this.tethersRepository.save(newTether);
     return newTether;
