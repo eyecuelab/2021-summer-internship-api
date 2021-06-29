@@ -11,7 +11,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-// import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateTetherDto } from './dto/createTether.dto';
 import { UpdateTetherDto } from './dto/updateTether.dto';
@@ -19,20 +19,15 @@ import { TethersService } from './tethers.service';
 import { Tether } from './tether.entity';
 import { GetTethersFilterDto } from './dto/getTethersFilter.dto';
 
-// @ApiBearerAuth()
+@ApiBearerAuth()
 @Controller('tethers')
 export class TethersController {
   constructor(private readonly tethersService: TethersService) {}
 
   // Get all Tethers
-  // @UseGuards(JwtAuthGuard)
-  // @Get('/')
-  // findAll(): Promise<Tether[]> {
-  //   return this.tethersService.getAllTethers();
-  // }
-
   @Get('/')
-  getTasks(@Query() filterDto: GetTethersFilterDto): Promise<Tether[]> {
+  @UseGuards(JwtAuthGuard)
+  getTethers(@Query() filterDto: GetTethersFilterDto): Promise<Tether[]> {
     return this.tethersService.getAllTethersFiltered(filterDto);
   }
 
@@ -58,7 +53,7 @@ export class TethersController {
   }
 
   // Edit one Tether by Id
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':tether_id')
   async update(
     @Param('tether_id', ParseUUIDPipe) tether_id: string,
@@ -68,6 +63,7 @@ export class TethersController {
   }
 
   // Delete Tether by ID
+  @UseGuards(JwtAuthGuard)
   @Delete(':tether_id')
   async deleteUser(@Param('tether_id', ParseUUIDPipe) tether_id: string) {
     return this.tethersService.deleteTether(tether_id);
