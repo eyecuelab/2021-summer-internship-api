@@ -13,6 +13,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import { User } from './user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UsersService } from './users.service';
+// import { Tether } from 'src/tethers/tether.entity';
 
 @ApiBearerAuth()
 @Controller('users')
@@ -31,6 +32,13 @@ export class UsersController {
   @Get(':id')
   async findById(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.findById(id);
+  }
+
+  // Get One User's tethers by ID
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/tethers')
+  async findTethersById(@Param('id', ParseUUIDPipe) id: string) {
+    return this.usersService.findTethersById(id);
   }
 
   // Edit One User by Id

@@ -49,7 +49,6 @@ export class AuthService {
   async login(user: Omit<User, 'password'>) {
     const payload = { username: user.username, sub: user.id };
     const { username, id } = await this.usersService.findById(user.id);
-    console.log(`current user is ${username}`);
     return {
       access_token: this.jwtService.sign(payload),
       sessionUser: { user: { username, id } },
