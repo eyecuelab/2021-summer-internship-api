@@ -57,10 +57,13 @@ export class TethersService {
     }
   }
 
-  async findOne(id: string, userId: string): Promise<Tether | undefined> {
+  async findOne(
+    tether_id: string,
+    userId: string,
+  ): Promise<Tether | undefined> {
     return this.tethersRepository.findOne({
       where: {
-        id: id,
+        tether_id: tether_id,
         user: userId,
       },
     });
