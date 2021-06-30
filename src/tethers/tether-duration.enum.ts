@@ -1,5 +1,5 @@
 export enum TetherDuration {
-  DAILY = 'Daily',
-  WEEKLY = 'Weekly',
-  MONTHLY = 'Monthly',
+  DAILY = 'Day',
+  WEEKLY = 'Week',
+  MONTHLY = 'Month',
 }

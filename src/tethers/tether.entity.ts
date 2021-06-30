@@ -35,14 +35,17 @@ export class Tether {
   user: User;
 
   @Column('text')
-  tether_action: string;
+  tether_activity: string;
 
   @Column('int')
-  tether_quantity: number;
+  tether_duration: number;
 
   @Column('text')
-  tether_noun: string;
+  tether_duration_noun: string;
 
   @Column()
-  tether_duration: TetherDuration;
+  tether_frequency: TetherDuration;
+
+  @Column()
+  tether_timespan: TetherDuration;
 }

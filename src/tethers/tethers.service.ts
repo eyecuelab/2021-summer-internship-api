@@ -73,7 +73,7 @@ export class TethersService {
     const newTether = await this.tethersRepository.create({
       ...tetherData,
       user,
-      tether_name: `${tetherData.tether_action} ${tetherData.tether_quantity} ${tetherData.tether_noun} ${tetherData.tether_duration}`,
+      tether_name: `${tetherData.tether_activity} ${tetherData.tether_duration} ${tetherData.tether_duration_noun} a ${tetherData.tether_frequency} for a ${tetherData.tether_timespan}`,
       tether_created_by: `${user.id}`,
       tether_created_by_plain: `${user.username}`,
     });

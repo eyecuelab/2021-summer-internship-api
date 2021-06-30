@@ -6,19 +6,24 @@ export class CreateTetherDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  tether_action: string;
+  tether_activity: string;
 
   @ApiProperty()
   @IsNumber()
-  tether_quantity: number;
+  tether_duration: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  tether_noun: string;
+  tether_duration_noun: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsEnum(TetherDuration)
-  tether_duration: TetherDuration;
+  tether_frequency: TetherDuration;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEnum(TetherDuration)
+  tether_timespan: TetherDuration;
 }
