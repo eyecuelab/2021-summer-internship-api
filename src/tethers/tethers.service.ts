@@ -113,24 +113,4 @@ export class TethersService {
       throw new NotFoundException(`Tether with ID ${tether_id} not found.`);
     }
   }
-
-  async addUserToTether(tether_id: string, user_id: string): Promise<void> {
-    const thisTether = await this.tethersRepository.findOne(tether_id);
-    const thisUser = await this.usersRepository.findOne(user_id);
-
-    // Circular logic issue in Get method
-    const { tethers, ...strippedUser } = thisUser;
-
-    if (thisTether && thisUser) {
-      this.tethersRepository
-        .createQueryBuilder('tethers')
-        .update(thisTether)
-        .set({
-          user: thisTether.user.concat(thisUser),
-        });
-    }
-
-    await this.tethersRepository.save(thisTether);
-    await this.usersRepository.save(thisUser);
-  }
 }
