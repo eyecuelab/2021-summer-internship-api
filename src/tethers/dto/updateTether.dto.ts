@@ -24,6 +24,6 @@ export class UpdateTetherDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsEnum(TetherDuration)
-  tether_timespan: TetherDuration;
+  @IsNumber()
+  tether_timespan: number;
 }

@@ -51,5 +51,5 @@ export class Tether {
   tether_frequency: TetherDuration;
 
   @Column()
-  tether_timespan: TetherDuration;
+  tether_timespan: number;
 }
