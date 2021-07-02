@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 import { TetherDuration } from './tether-duration.enum';
 
@@ -31,8 +31,10 @@ export class Tether {
   @Column('text')
   tether_created_by_plain: string;
 
-  @ManyToOne(() => User, (user) => user.tethers)
-  user: User;
+  @ManyToMany(() => User, (user) => user.tethers, {
+    eager: true,
+  })
+  user: User[];
 
   @Column('text')
   tether_activity: string;

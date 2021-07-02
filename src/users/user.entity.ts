@@ -4,8 +4,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  OneToMany,
+  ManyToMany,
   BeforeInsert,
+  JoinTable,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -28,7 +29,10 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  @OneToMany(() => Tether, (tether) => tether.tether_id)
+  @ManyToMany(() => Tether, (tether) => tether.user, {
+    cascade: true,
+  })
+  @JoinTable()
   tethers: Tether[];
 
   @Column({ nullable: true })
@@ -36,9 +40,6 @@ export class User {
 
   @Column({ nullable: true })
   tethers_completed: number;
-
-  // @OneToMany(() => Friend, (friend) => friend.id)
-  // friends: Friend[];
 
   @CreateDateColumn()
   created_on?: Date;
@@ -48,7 +49,4 @@ export class User {
 
   @Column({ nullable: true })
   xp: number;
-
-  // @OneToMany(() => Rating, (rating) => rating.user)
-  // ratings: Rating[];
 }

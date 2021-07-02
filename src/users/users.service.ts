@@ -72,6 +72,7 @@ export class UsersService {
   async getAllUsers(): Promise<User[]> {
     const user = await this.usersRepository
       .createQueryBuilder('users')
+      .leftJoinAndSelect('users.tethers', 'tethers')
       .getMany();
     return user;
   }

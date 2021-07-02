@@ -10,14 +10,18 @@ import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
 import { UpdateTetherDto } from './dto/updateTether.dto';
 import { GetTethersFilterDto } from './dto/getTethersFilter.dto';
+// import { TetherDuration } from './tether-duration.enum';
 
 @Injectable()
 export class TethersService {
   constructor(
     @InjectRepository(Tether)
     private tethersRepository: Repository<Tether>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
+  // Finds Tether by user ID
   async find(userId: string) {
     return this.tethersRepository.find({
       where: {
@@ -27,12 +31,15 @@ export class TethersService {
   }
 
   async getAllTethers(): Promise<Tether[]> {
-    const user = await this.tethersRepository
+    const tethers = await this.tethersRepository
       .createQueryBuilder('tethers')
+      .leftJoinAndSelect('tethers.user', 'user')
       .getMany();
-    return user;
+    return tethers;
   }
 
+  // Works as get all tethers but allows for optional created_by parameter
+  // where created_by is the plaintext UUID of the user who created this
   async getAllTethersFiltered(
     filterDto: GetTethersFilterDto,
   ): Promise<Tether[]> {
@@ -72,11 +79,21 @@ export class TethersService {
   async create(tetherData: CreateTetherDto, user: Omit<User, 'password'>) {
     const newTether = await this.tethersRepository.create({
       ...tetherData,
-      user,
+      user: [user],
       tether_name: `${tetherData.tether_activity} ${tetherData.tether_duration} ${tetherData.tether_duration_noun} a ${tetherData.tether_frequency} for a ${tetherData.tether_timespan}`,
       tether_created_by: `${user.id}`,
       tether_created_by_plain: `${user.username}`,
     });
+
+    // const newUser = {
+    //   ...user,
+    //   // tethers: newTether,
+    // };
+
+    console.log(user);
+    // user.tethers.push(newTether);
+
+    await this.usersRepository.save(user);
     await this.tethersRepository.save(newTether);
     return newTether;
   }
@@ -84,6 +101,7 @@ export class TethersService {
   async updateOne(
     tether_id: string,
     tether_userData: Partial<UpdateTetherDto>,
+    // Note: updating does NOT change the title yet!
   ) {
     const { affected } = await this.tethersRepository.update(
       tether_id,
