@@ -10,7 +10,6 @@ import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
 import { UpdateTetherDto } from './dto/updateTether.dto';
 import { GetTethersFilterDto } from './dto/getTethersFilter.dto';
-// import { TetherDuration } from './tether-duration.enum';
 
 @Injectable()
 export class TethersService {
@@ -25,7 +24,7 @@ export class TethersService {
   async find(userId: string) {
     return this.tethersRepository.find({
       where: {
-        user: userId,
+        tether_created_by: userId,
       },
     });
   }
@@ -33,7 +32,7 @@ export class TethersService {
   async getAllTethers(): Promise<Tether[]> {
     const tethers = await this.tethersRepository
       .createQueryBuilder('tethers')
-      .leftJoinAndSelect('tethers.user', 'user')
+      // .leftJoin('tethers.user', 'user')
       .getMany();
     return tethers;
   }
@@ -71,7 +70,7 @@ export class TethersService {
     return this.tethersRepository.findOne({
       where: {
         tether_id: tether_id,
-        user: userId,
+        tether_created_by: userId,
       },
     });
   }
@@ -113,5 +112,25 @@ export class TethersService {
       // Possibly redact this info to prevent unauthorized guessing
       throw new NotFoundException(`Tether with ID ${tether_id} not found.`);
     }
+  }
+
+  async addUserToTether(tether_id: string, user_id: string): Promise<void> {
+    const thisTether = await this.tethersRepository.findOne(tether_id);
+    const thisUser = await this.usersRepository.findOne(user_id);
+
+    // Circular logic issue in Get method
+    const { tethers, ...strippedUser } = thisUser;
+
+    if (thisTether && thisUser) {
+      this.tethersRepository
+        .createQueryBuilder('tethers')
+        .update(thisTether)
+        .set({
+          user: thisTether.user.concat(thisUser),
+        });
+    }
+
+    await this.tethersRepository.save(thisTether);
+    await this.usersRepository.save(thisUser);
   }
 }

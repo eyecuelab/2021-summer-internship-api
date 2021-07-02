@@ -22,7 +22,7 @@ export class UsersService {
   async find(userId: string) {
     return this.usersRepository.find({
       where: {
-        user: userId,
+        id: userId,
       },
     });
   }

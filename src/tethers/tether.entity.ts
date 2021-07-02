@@ -33,6 +33,8 @@ export class Tether {
 
   @ManyToMany(() => User, (user) => user.tethers, {
     eager: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
   })
   user: User[];
 

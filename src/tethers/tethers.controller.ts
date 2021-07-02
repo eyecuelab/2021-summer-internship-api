@@ -62,6 +62,16 @@ export class TethersController {
     return this.tethersService.updateOne(tether_id, userParams);
   }
 
+  //Add a user to a Tether
+  @UseGuards(JwtAuthGuard)
+  @Patch(':tether_id/add/:id')
+  async addToTether(
+    @Param('tether_id', ParseUUIDPipe) tether_id: string,
+    @Param('id', ParseUUIDPipe) user_id: string,
+  ) {
+    return this.tethersService.addUserToTether(tether_id, user_id);
+  }
+
   // Delete Tether by ID
   @UseGuards(JwtAuthGuard)
   @Delete(':tether_id')
