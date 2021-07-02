@@ -85,14 +85,6 @@ export class TethersService {
       tether_created_by_plain: `${user.username}`,
     });
 
-    // const newUser = {
-    //   ...user,
-    //   // tethers: newTether,
-    // };
-
-    // console.log(user);
-    // user.tethers.push(newTether);
-
     await this.usersRepository.save(user);
     await this.tethersRepository.save(newTether);
     return newTether;

@@ -78,7 +78,12 @@ export class UsersService {
   }
 
   async create(userData: CreateUserDto) {
-    const newUser = await this.usersRepository.create(userData);
+    const newUser = await this.usersRepository.create({
+      ...userData,
+      tethers_ongoing: 0,
+      tethers_completed: 0,
+      xp: 0,
+    });
     await this.usersRepository.save(newUser);
     return newUser;
   }
