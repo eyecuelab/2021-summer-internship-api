@@ -90,7 +90,7 @@ export class TethersService {
     //   // tethers: newTether,
     // };
 
-    console.log(user);
+    // console.log(user);
     // user.tethers.push(newTether);
 
     await this.usersRepository.save(user);
