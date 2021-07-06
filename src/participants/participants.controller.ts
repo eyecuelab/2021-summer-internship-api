@@ -25,7 +25,7 @@ export class ParticipantsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post(':tether_id/:user_id')
   async create(
     // @Request() participant_req,
     @Body() createParticipantDto: CreateParticipantDto,

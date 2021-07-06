@@ -7,10 +7,12 @@ export class Participant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => Tether, (tether) => tether.tether_id)
+  // @OneToOne(() => Tether, (tether) => tether.tether_id)
+  @Column({ nullable: false })
   tether_id: string;
 
-  @OneToOne(() => User, (user) => user.id)
+  // @OneToOne(() => User, (user) => user.id)
+  @Column({ nullable: false })
   user_id: string;
 
   @Column({ nullable: false })
