@@ -100,7 +100,7 @@ export class UsersService {
     if (affected === 0) {
       return new NotFoundException('');
     }
-    const user = await this.findById(id);
+    const user = await this.findOne({ id });
     delete user.password;
     return user;
   }
