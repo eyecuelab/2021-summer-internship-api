@@ -8,8 +8,8 @@ import { ParticipantsModule } from 'src/participants/participants.module';
 
 @Module({
   imports: [
-    TethersModule,
-    ParticipantsModule,
+    // TethersModule,
+    // ParticipantsModule,
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [UsersController],

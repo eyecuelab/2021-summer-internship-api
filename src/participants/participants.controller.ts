@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { TethersService } from 'src/tethers/tethers.service';
+import { UsersService } from 'src/users/users.service';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
 import { Participant } from './participant.entity';
 import { ParticipantsService } from './participants.service';
@@ -16,7 +18,10 @@ import { ParticipantsService } from './participants.service';
 @ApiBearerAuth()
 @Controller('participants')
 export class ParticipantsController {
-  constructor(private readonly participantsService: ParticipantsService) {}
+  constructor(
+    private readonly participantsService: ParticipantsService,
+    private readonly tethersService: TethersService,
+  ) {}
 
   // Gets all Participants records (ultimately not really needed)
   @UseGuards(JwtAuthGuard)

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
@@ -27,6 +27,18 @@ export class ParticipantsService {
     });
   }
 
+  async checkExistingLink(
+    tether_id: string,
+    user_id: string,
+  ): Promise<Participant[] | undefined> {
+    return this.participantsRepository.find({
+      where: {
+        tether_id: tether_id,
+        user_id: user_id,
+      },
+    });
+  }
+
   // Get all User's participating Tethers
 
   async create(participantData: CreateParticipantDto): Promise<Participant> {
@@ -38,7 +50,36 @@ export class ParticipantsService {
       // Always start at 0 links completed
       links_completed: 0,
     });
-    await this.participantsRepository.save(newParticipantLink);
-    return newParticipantLink;
+
+    // Need to prevent dupes from being added
+    const existingLink = await this.checkExistingLink(
+      participantData.tether_id,
+      participantData.user_id,
+    );
+
+    const countParticipants = await this.getOneTethersParticipants(
+      participantData.tether_id,
+    );
+
+    if (existingLink[0]?.id) {
+      // throw new HttpException(
+      //   {
+      //     status: HttpStatus.FORBIDDEN,
+      //     error: 'User already exists on this Tether',
+      //   },
+      //   HttpStatus.FORBIDDEN,
+      // );
+    } else if (countParticipants.length >= 4) {
+      // throw new HttpException(
+      //   {
+      //     status: HttpStatus.FORBIDDEN,
+      //     error: 'Max amount of Users on this Tether',
+      //   },
+      //   HttpStatus.FORBIDDEN,
+      // );
+    } else {
+      await this.participantsRepository.save(newParticipantLink);
+      return newParticipantLink;
+    }
   }
 }
