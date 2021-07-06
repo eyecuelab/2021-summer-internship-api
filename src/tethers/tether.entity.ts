@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToMany,
   OneToMany,
 } from 'typeorm';
 import { TetherDuration } from './tether-duration.enum';
