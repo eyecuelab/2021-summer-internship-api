@@ -18,6 +18,17 @@ export class ParticipantsService {
     return participants;
   }
 
+  // Get all Tether's participants
+  async getOneTethersParticipants(tether_id: string): Promise<Participant[]> {
+    return this.participantsRepository.find({
+      where: {
+        tether_id: tether_id,
+      },
+    });
+  }
+
+  // Get all User's participating Tethers
+
   async create(participantData: CreateParticipantDto): Promise<Participant> {
     const newParticipantLink = await this.participantsRepository.create({
       ...participantData,

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -23,6 +24,17 @@ export class ParticipantsController {
   getParticipants(): Promise<Participant[]> {
     return this.participantsService.getParticipants();
   }
+
+  // Get all Tether's participants
+  @UseGuards(JwtAuthGuard)
+  @Get(':tether_id')
+  getOneTethersParticipants(
+    @Param('tether_id') tether_id: string,
+  ): Promise<Participant[]> {
+    return this.participantsService.getOneTethersParticipants(tether_id);
+  }
+
+  // Get all User's participating Tethers
 
   @UseGuards(JwtAuthGuard)
   @Post(':tether_id/:user_id')
