@@ -40,20 +40,19 @@ export class TethersService {
     return newTether;
   }
 
-  async updateOne(
-    tether_id: string,
-    tether_userData: Partial<UpdateTetherDto>,
-    // Note: updating does NOT change the title yet!
-  ) {
+  async updateOne(tether_id: string, tetherData: Partial<UpdateTetherDto>) {
     const { affected } = await this.tethersRepository.update(
       tether_id,
-      tether_userData,
+      tetherData,
     );
     if (affected === 0) {
       return new NotFoundException('');
     }
-    const tether = await this.find(tether_id);
-    return tether;
+
+    const tetherToUpdate = await this.tethersRepository.findOne(tether_id);
+    tetherToUpdate.tether_name = `${tetherData.tether_activity} - ${tetherData.tether_duration} ${tetherData.tether_duration_noun} a ${tetherData.tether_frequency}, ${tetherData.tether_timespan} times.`;
+    await this.tethersRepository.save(tetherToUpdate);
+    return tetherToUpdate;
   }
 
   async deleteTether(tether_id: string): Promise<void> {
