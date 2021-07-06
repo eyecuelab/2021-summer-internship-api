@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateParticipantDto } from './dto/createParticipant.dto';
 import { Participant } from './participant.entity';
 
 @Injectable()
@@ -15,5 +16,18 @@ export class ParticipantsService {
       .createQueryBuilder('participants')
       .getMany();
     return participants;
+  }
+
+  async create(participantData: CreateParticipantDto): Promise<Participant> {
+    const newParticipantLink = await this.participantsRepository.create({
+      ...participantData,
+      // Next item will need to be also brought automatically later
+      // Based on the duration/timespan ratio
+      links_total: 10,
+      // Always start at 0 links completed
+      links_completed: 0,
+    });
+    await this.participantsRepository.save(newParticipantLink);
+    return newParticipantLink;
   }
 }

@@ -7,11 +7,11 @@ export class Participant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => User, (user) => user.id)
-  user_id: string;
-
   @OneToOne(() => Tether, (tether) => tether.tether_id)
   tether_id: string;
+
+  @OneToOne(() => User, (user) => user.id)
+  user_id: string;
 
   @Column({ nullable: false })
   links_total: number;
