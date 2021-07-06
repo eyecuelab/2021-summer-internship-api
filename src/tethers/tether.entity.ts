@@ -5,6 +5,7 @@ import {
   Column,
   CreateDateColumn,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import { TetherDuration } from './tether-duration.enum';
 
@@ -25,18 +26,19 @@ export class Tether {
   @CreateDateColumn()
   tether_full_on?: Date;
 
-  @Column('text')
-  tether_created_by: string;
+  @OneToMany(() => User, (user) => user.id, {
+    eager: true,
+  })
+  tether_created_by: User;
 
   @Column('text')
   tether_created_by_plain: string;
 
-  @ManyToMany(() => User, (user) => user.tethers, {
-    eager: true,
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  user: User[];
+  @OneToMany(() => User, (user) => user.id)
+  participants: User[];
+
+  @OneToMany(() => User, (user) => user.id)
+  invitees: User[];
 
   @Column('text')
   tether_activity: string;

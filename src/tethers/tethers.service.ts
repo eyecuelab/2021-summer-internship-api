@@ -16,8 +16,6 @@ export class TethersService {
   constructor(
     @InjectRepository(Tether)
     private tethersRepository: Repository<Tether>,
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
   ) {}
 
   // Finds Tether by user ID
@@ -32,7 +30,6 @@ export class TethersService {
   async getAllTethers(): Promise<Tether[]> {
     const tethers = await this.tethersRepository
       .createQueryBuilder('tethers')
-      // .leftJoin('tethers.user', 'user')
       .getMany();
     return tethers;
   }
@@ -43,9 +40,7 @@ export class TethersService {
     filterDto: GetTethersFilterDto,
   ): Promise<Tether[]> {
     const { tether_created_by } = filterDto;
-
     const query = this.tethersRepository.createQueryBuilder('tethers');
-
     if (tether_created_by) {
       query.andWhere(
         '(LOWER(tethers.tether_created_by) LIKE LOWER(:tether_created_by))',
@@ -54,7 +49,6 @@ export class TethersService {
         },
       );
     }
-
     try {
       const tethers = await query.getMany();
       return tethers;
@@ -78,13 +72,11 @@ export class TethersService {
   async create(tetherData: CreateTetherDto, user: Omit<User, 'password'>) {
     const newTether = await this.tethersRepository.create({
       ...tetherData,
-      user: [user],
+      // user: [user],
       tether_name: `${tetherData.tether_activity} - ${tetherData.tether_duration} ${tetherData.tether_duration_noun} a ${tetherData.tether_frequency}, ${tetherData.tether_timespan} times.`,
-      tether_created_by: `${user.id}`,
+      // tether_created_by: `${user}`,
       tether_created_by_plain: `${user.username}`,
     });
-
-    await this.usersRepository.save(user);
     await this.tethersRepository.save(newTether);
     return newTether;
   }
@@ -107,7 +99,6 @@ export class TethersService {
 
   async deleteTether(tether_id: string): Promise<void> {
     const result = await this.tethersRepository.delete({ tether_id });
-
     if (result.affected === 0) {
       // Possibly redact this info to prevent unauthorized guessing
       throw new NotFoundException(`Tether with ID ${tether_id} not found.`);

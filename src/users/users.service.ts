@@ -1,22 +1,21 @@
 import {
   Injectable,
   NotFoundException,
-  InternalServerErrorException,
+  // InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { Tether } from 'src/tethers/tether.entity';
+// import { Tether } from 'src/tethers/tether.entity';
+// import { TethersService } from 'src/tethers/tethers.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    @InjectRepository(Tether)
-    private tethersRepository: Repository<Tether>,
   ) {}
 
   async find(userId: string) {
@@ -46,20 +45,20 @@ export class UsersService {
     });
   }
 
-  async findTethersById(id: string): Promise<Tether[]> {
-    const query = this.tethersRepository.find({
-      where: {
-        tether_created_by: id,
-      },
-    });
+  // async findTethersById(id: string): Promise<Tether[]> {
+  //   const query = TethersService.find({
+  //     where: {
+  //       tether_created_by: id,
+  //     },
+  //   });
 
-    try {
-      const tethers = await query;
-      return tethers;
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-  }
+  //   try {
+  //     const tethers = await query;
+  //     return tethers;
+  //   } catch (error) {
+  //     throw new InternalServerErrorException();
+  //   }
+  // }
 
   async findByUsername(username: string): Promise<User | undefined> {
     return this.usersRepository.findOne({

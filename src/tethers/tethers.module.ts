@@ -3,17 +3,11 @@ import { TethersService } from './tethers.service';
 import { Tether } from './tether.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TethersController } from './tethers.controller';
-import { User } from 'src/users/user.entity';
-import { UsersController } from 'src/users/users.controller';
-import { UsersService } from 'src/users/users.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Tether]),
-    TypeOrmModule.forFeature([User]),
-  ],
-  controllers: [TethersController, UsersController],
-  providers: [TethersService, UsersService],
-  exports: [TethersService, UsersService],
+  imports: [TypeOrmModule.forFeature([Tether])],
+  controllers: [TethersController],
+  providers: [TethersService],
+  exports: [TethersService],
 })
 export class TethersModule {}

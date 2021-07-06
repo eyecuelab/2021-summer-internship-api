@@ -29,11 +29,17 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  @ManyToMany(() => Tether, (tether) => tether.user, {
+  @ManyToMany(() => Tether, (tether) => tether.participants, {
     cascade: true,
   })
   @JoinTable()
-  tethers: Tether[];
+  active_tethers: Tether[];
+
+  @ManyToMany(() => Tether, (tether) => tether.invitees, {
+    cascade: true,
+  })
+  @JoinTable()
+  pending_tethers: Tether[];
 
   @Column({ nullable: true })
   tethers_ongoing: number;
