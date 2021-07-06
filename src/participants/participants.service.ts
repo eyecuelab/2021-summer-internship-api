@@ -1,4 +1,4 @@
-import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';

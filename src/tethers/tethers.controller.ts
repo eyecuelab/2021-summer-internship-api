@@ -7,7 +7,6 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -17,7 +16,6 @@ import { CreateTetherDto } from './dto/createTether.dto';
 import { UpdateTetherDto } from './dto/updateTether.dto';
 import { TethersService } from './tethers.service';
 import { Tether } from './tether.entity';
-import { GetTethersFilterDto } from './dto/getTethersFilter.dto';
 
 @ApiBearerAuth()
 @Controller('tethers')
@@ -27,18 +25,17 @@ export class TethersController {
   // Get all Tethers
   @Get('/')
   @UseGuards(JwtAuthGuard)
-  getTethers(@Query() filterDto: GetTethersFilterDto): Promise<Tether[]> {
-    return this.tethersService.getAllTethersFiltered(filterDto);
+  getTethers(): Promise<Tether[]> {
+    return this.tethersService.getAllTethers();
   }
 
   // Get one Tether by ID
   @UseGuards(JwtAuthGuard)
   @Get(':tether_id')
   async findOne(
-    @Request() tether_req,
     @Param('tether_id', ParseUUIDPipe) tether_id: string,
-  ) {
-    return this.tethersService.findOne(tether_id, tether_req.user.id);
+  ): Promise<Tether[] | undefined> {
+    return this.tethersService.find(tether_id);
   }
 
   // Create a Tether
@@ -47,9 +44,8 @@ export class TethersController {
   async create(
     @Request() tether_req,
     @Body() createTetherDto: CreateTetherDto,
-  ) {
-    this.tethersService.create(createTetherDto, tether_req.user);
-    return this.tethersService.getAllTethers();
+  ): Promise<Tether> {
+    return this.tethersService.create(createTetherDto, tether_req.user);
   }
 
   // Edit one Tether by Id

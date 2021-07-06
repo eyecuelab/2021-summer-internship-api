@@ -25,10 +25,8 @@ export class Tether {
   @CreateDateColumn()
   tether_full_on?: Date;
 
-  @OneToMany(() => User, (user) => user.id, {
-    eager: true,
-  })
-  tether_created_by: User;
+  @Column('text')
+  tether_created_by: string;
 
   @Column('text')
   tether_created_by_plain: string;

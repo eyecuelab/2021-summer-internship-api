@@ -1,15 +1,9 @@
-import {
-  Injectable,
-  NotFoundException,
-  // InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
-// import { Tether } from 'src/tethers/tether.entity';
-// import { TethersService } from 'src/tethers/tethers.service';
 
 @Injectable()
 export class UsersService {
