@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TethersModule } from './tethers/tethers.module';
+import { ParticipantsModule } from './participants/participants.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TethersModule } from './tethers/tethers.module';
     AuthModule,
     UsersModule,
     TethersModule,
+    ParticipantsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
