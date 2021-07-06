@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { TethersService } from './tethers.service';
-import { Tether } from './tether.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Tether } from './tether.entity';
 import { TethersController } from './tethers.controller';
+import { TethersService } from './tethers.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Tether])],

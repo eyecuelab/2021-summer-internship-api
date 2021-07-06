@@ -9,4 +9,11 @@ export class ParticipantsService {
     @InjectRepository(Participant)
     private participantsRepository: Repository<Participant>,
   ) {}
+
+  async getParticipants(): Promise<Participant[]> {
+    const participants = await this.participantsRepository
+      .createQueryBuilder('participants')
+      .getMany();
+    return participants;
+  }
 }
