@@ -5,16 +5,12 @@ import { Repository } from 'typeorm';
 import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
 import { UpdateTetherDto } from './dto/updateTether.dto';
-import { Participant } from 'src/participants/participant.entity';
-import { ParticipantsService } from 'src/participants/participants.service';
 
 @Injectable()
 export class TethersService {
   constructor(
     @InjectRepository(Tether)
     private tethersRepository: Repository<Tether>,
-    @InjectRepository(Participant)
-    private participantsRepository: Repository<Participant>,
   ) {}
 
   // Finds Tether by Tether ID
@@ -42,17 +38,15 @@ export class TethersService {
     });
 
     await this.tethersRepository.save(newTether);
-    console.log(newTether.tether_id);
-    console.log(newTether.tether_created_by);
 
-    const participantLink = await this.participantsRepository.create({
-      tether_id: newTether.tether_id,
-      user_id: newTether.tether_created_by,
-      links_total: newTether.tether_timespan,
-      links_completed: 0,
-    });
+    // const participantLink = await this.participantsRepository.create({
+    //   tether_id: newTether.tether_id,
+    //   user_id: newTether.tether_created_by,
+    //   links_total: newTether.tether_timespan,
+    //   links_completed: 0,
+    // });
 
-    await this.participantsRepository.save(participantLink);
+    // await this.participantsRepository.save(participantLink);
 
     return newTether;
   }

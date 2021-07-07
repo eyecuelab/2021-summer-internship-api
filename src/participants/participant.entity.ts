@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { User } from 'src/users/user.entity';
 import { Tether } from 'src/tethers/tether.entity';
 
@@ -7,12 +13,12 @@ export class Participant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // @OneToOne(() => Tether, (tether) => tether.tether_id)
-  @Column({ nullable: false })
+  @ManyToOne(() => Tether)
+  @JoinColumn()
   tether_id: string;
 
-  // @OneToOne(() => User, (user) => user.id)
-  @Column({ nullable: false })
+  @ManyToOne(() => User)
+  @JoinColumn()
   user_id: string;
 
   @Column({ nullable: false })

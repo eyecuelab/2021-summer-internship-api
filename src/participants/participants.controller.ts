@@ -17,22 +17,24 @@ export class ParticipantsController {
     return this.participantsService.getParticipants();
   }
 
-  // Get all Tether's participants
+  // Left Join
   @UseGuards(JwtAuthGuard)
   @Get('/tether/:tether_id')
-  getOneTethersParticipants(
-    @Param('tether_id') tether_id: string,
-  ): Promise<Participant[]> {
-    return this.participantsService.getOneTethersParticipants(tether_id);
+  getLeftJoin(@Param('tether_id') tether_id: string): Promise<Participant[]> {
+    return this.participantsService.getParticipantTetherDetails(tether_id);
   }
 
-  // Get all User's participating Tethers
+  // Left Join User
   @UseGuards(JwtAuthGuard)
   @Get('/user/:user_id')
-  getOneUsersParticipatingTethers(
-    @Param('user_id') user_id: string,
-  ): Promise<Participant[]> {
-    return this.participantsService.getOneUsersParticipatingTethers(user_id);
+  getLeftJoinUser(@Param('user_id') user_id: string): Promise<Participant[]> {
+    return this.participantsService.getParticipantUserDetails(user_id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/alldeets/:tether_id')
+  getFullParticipantDetails(@Param('tether_id') tether_id: string) {
+    return this.participantsService.getFullParticipantDetails(tether_id);
   }
 
   @UseGuards(JwtAuthGuard)

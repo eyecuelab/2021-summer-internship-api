@@ -5,8 +5,10 @@ import {
   Column,
   CreateDateColumn,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { TetherDuration } from './tether-duration.enum';
+import { Participant } from 'src/participants/participant.entity';
 
 @Entity('tether')
 export class Tether {
@@ -31,8 +33,12 @@ export class Tether {
   @Column('text')
   tether_created_by_plain: string;
 
-  @OneToMany(() => User, (user) => user.id)
-  participants: User[];
+  // @OneToMany(() => User, (user) => user.id)
+  // participant: User[];
+
+  @OneToMany(() => Participant, (participant) => participant.tether_id)
+  @JoinColumn()
+  participant_id: Participant;
 
   @OneToMany(() => User, (user) => user.id)
   invitees: User[];
