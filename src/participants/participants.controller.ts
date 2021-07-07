@@ -19,7 +19,7 @@ export class ParticipantsController {
 
   // Get all Tether's participants
   @UseGuards(JwtAuthGuard)
-  @Get(':tether_id')
+  @Get('/tether/:tether_id')
   getOneTethersParticipants(
     @Param('tether_id') tether_id: string,
   ): Promise<Participant[]> {
@@ -27,6 +27,13 @@ export class ParticipantsController {
   }
 
   // Get all User's participating Tethers
+  @UseGuards(JwtAuthGuard)
+  @Get('/user/:user_id')
+  getOneUsersParticipatingTethers(
+    @Param('user_id') user_id: string,
+  ): Promise<Participant[]> {
+    return this.participantsService.getOneUsersParticipatingTethers(user_id);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post(':tether_id/:user_id')

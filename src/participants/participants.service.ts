@@ -27,6 +27,17 @@ export class ParticipantsService {
     });
   }
 
+  // Get all participation links where User is active participant
+  async getOneUsersParticipatingTethers(
+    user_id: string,
+  ): Promise<Participant[]> {
+    return this.participantsRepository.find({
+      where: {
+        user_id: `${user_id}`,
+      },
+    });
+  }
+
   async checkExistingLink(
     tether_id: string,
     user_id: string,
