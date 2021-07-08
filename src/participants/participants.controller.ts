@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -64,14 +65,10 @@ export class ParticipantsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/update/:participant_id')
-  async update(
+  @Patch('/addIncrement/:participant_id')
+  async addIncrement(
     @Param('participant_id', ParseUUIDPipe) participant_id: string,
-    @Body() updateParticipantDto: UpdateParticipantDto,
   ) {
-    return this.participantsService.updateOne(
-      participant_id,
-      updateParticipantDto,
-    );
+    return this.participantsService.addIncrement(participant_id);
   }
 }

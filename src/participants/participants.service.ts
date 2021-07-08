@@ -90,16 +90,18 @@ export class ParticipantsService {
     return newParticipantLink;
   }
 
-  // Doesn't update due to missing information (that should already be present)
-  async updateOne(link_id, updateData: Partial<UpdateParticipantDto>) {
-    const updateQuery = await this.participantsRepository
-      .createQueryBuilder('participants')
-      .update(Participant)
-      .set({
-        links_completed: updateData.links_completed,
-      })
-      .where('id = :id', { id: link_id })
-      .execute();
-    return updateQuery;
+  // Add one increment
+  // IN a perfect world, this will add or subtract
+  async addIncrement(link_id): Promise<void> {
+    const thisParticipantLink = await this.participantsRepository.findOne(
+      link_id,
+    );
+
+    if (thisParticipantLink.links_completed < thisParticipantLink.links_total) {
+      thisParticipantLink.links_completed =
+        thisParticipantLink.links_completed + 1;
+      await this.participantsRepository.save(thisParticipantLink);
+    }
+    console.log(thisParticipantLink);
   }
 }
