@@ -79,7 +79,14 @@ export class TethersService {
     tetherToUpdate.tether_completed_on = new Date();
 
     await this.tethersRepository.save(tetherToUpdate);
-    console.log(tetherToUpdate.tether_completed_on);
+    return tetherToUpdate;
+  }
+
+  async fullTether(tether_id: string): Promise<Tether> {
+    const tetherToUpdate = await this.tethersRepository.findOne(tether_id);
+    tetherToUpdate.tether_full_on = new Date();
+
+    await this.tethersRepository.save(tetherToUpdate);
     return tetherToUpdate;
   }
 }
