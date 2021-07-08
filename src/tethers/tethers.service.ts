@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTetherDto } from './dto/createTether.dto';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
 import { UpdateTetherDto } from './dto/updateTether.dto';
@@ -88,5 +88,19 @@ export class TethersService {
 
     await this.tethersRepository.save(tetherToUpdate);
     return tetherToUpdate;
+  }
+
+  async findComplete(): Promise<Tether[] | undefined> {
+    const hasDate = await this.tethersRepository.find({
+      tether_completed_on: MoreThan('1980-01-01 00:00:01.000000'),
+    });
+    return hasDate;
+
+    // const query = await this.tethersRepository
+    //   .createQueryBuilder('tethers')
+    //   .where('tethers.tether_completed_on > 1980-01-01 00:00:01.000000')
+    //   .execute();
+
+    // return query;
   }
 }

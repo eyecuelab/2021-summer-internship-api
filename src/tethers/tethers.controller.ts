@@ -38,6 +38,13 @@ export class TethersController {
     return this.tethersService.find(tether_id);
   }
 
+  // Get all that are complete
+  @UseGuards(JwtAuthGuard)
+  @Get('/complete/test')
+  async findComplete(): Promise<Tether[]> {
+    return this.tethersService.findComplete();
+  }
+
   // Create a Tether
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -67,7 +74,7 @@ export class TethersController {
     return this.tethersService.completeTether(tether_id);
   }
 
-  // Update Complete Date
+  // Update Full Date
   @UseGuards(JwtAuthGuard)
   @Patch('/full/:tether_id')
   async updateFullDate(@Param('tether_id', ParseUUIDPipe) tether_id: string) {
