@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
+import { UpdateParticipantDto } from './dto/updateParticipant.dto';
 import { Participant } from './participant.entity';
 
 @Injectable()
@@ -16,6 +17,14 @@ export class ParticipantsService {
       .createQueryBuilder('participants')
       .getMany();
     return participants;
+  }
+
+  async find(participants_id: string): Promise<Participant[]> {
+    return this.participantsRepository.find({
+      where: {
+        id: participants_id,
+      },
+    });
   }
 
   async countParticipants(tether_id: string): Promise<number> {
@@ -79,5 +88,18 @@ export class ParticipantsService {
 
     await this.participantsRepository.save(newParticipantLink);
     return newParticipantLink;
+  }
+
+  // Doesn't update due to missing information (that should already be present)
+  async updateOne(link_id, updateData: Partial<UpdateParticipantDto>) {
+    const updateQuery = await this.participantsRepository
+      .createQueryBuilder('participants')
+      .update(Participant)
+      .set({
+        links_completed: updateData.links_completed,
+      })
+      .where('id = :id', { id: link_id })
+      .execute();
+    return updateQuery;
   }
 }

@@ -10,6 +10,7 @@ import {
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
+import { UpdateParticipantDto } from './dto/updateParticipant.dto';
 import { Participant } from './participant.entity';
 import { ParticipantsService } from './participants.service';
 
@@ -60,5 +61,17 @@ export class ParticipantsController {
   ): Promise<Participant[]> {
     this.participantsService.create(createParticipantDto);
     return this.participantsService.getParticipants();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/update/:participant_id')
+  async update(
+    @Param('participant_id', ParseUUIDPipe) participant_id: string,
+    @Body() updateParticipantDto: UpdateParticipantDto,
+  ) {
+    return this.participantsService.updateOne(
+      participant_id,
+      updateParticipantDto,
+    );
   }
 }
