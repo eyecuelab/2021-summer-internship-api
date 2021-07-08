@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
-import { UpdateParticipantDto } from './dto/updateParticipant.dto';
 import { Participant } from './participant.entity';
 
 @Injectable()
@@ -102,6 +101,18 @@ export class ParticipantsService {
         thisParticipantLink.links_completed + 1;
       await this.participantsRepository.save(thisParticipantLink);
     }
-    console.log(thisParticipantLink);
+  }
+
+  // Subtract increment
+  async subIncrement(link_id): Promise<void> {
+    const thisParticipantLink = await this.participantsRepository.findOne(
+      link_id,
+    );
+
+    if (thisParticipantLink.links_completed > 0) {
+      thisParticipantLink.links_completed =
+        thisParticipantLink.links_completed - 1;
+      await this.participantsRepository.save(thisParticipantLink);
+    }
   }
 }

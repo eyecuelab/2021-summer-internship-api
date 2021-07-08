@@ -11,7 +11,6 @@ import {
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
-import { UpdateParticipantDto } from './dto/updateParticipant.dto';
 import { Participant } from './participant.entity';
 import { ParticipantsService } from './participants.service';
 
@@ -70,5 +69,13 @@ export class ParticipantsController {
     @Param('participant_id', ParseUUIDPipe) participant_id: string,
   ) {
     return this.participantsService.addIncrement(participant_id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/subIncrement/:participant_id')
+  async subIncrement(
+    @Param('participant_id', ParseUUIDPipe) participant_id: string,
+  ) {
+    return this.participantsService.subIncrement(participant_id);
   }
 }
