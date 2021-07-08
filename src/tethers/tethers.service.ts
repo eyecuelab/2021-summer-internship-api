@@ -90,17 +90,11 @@ export class TethersService {
     return tetherToUpdate;
   }
 
-  async findComplete(): Promise<Tether[] | undefined> {
+  async findComplete(created_by: string): Promise<Tether[] | undefined> {
     const hasDate = await this.tethersRepository.find({
       tether_completed_on: MoreThan('1980-01-01 00:00:01.000000'),
+      tether_created_by: created_by,
     });
     return hasDate;
-
-    // const query = await this.tethersRepository
-    //   .createQueryBuilder('tethers')
-    //   .where('tethers.tether_completed_on > 1980-01-01 00:00:01.000000')
-    //   .execute();
-
-    // return query;
   }
 }

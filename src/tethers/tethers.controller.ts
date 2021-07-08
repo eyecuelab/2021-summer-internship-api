@@ -38,11 +38,13 @@ export class TethersController {
     return this.tethersService.find(tether_id);
   }
 
-  // Get all that are complete
+  // Get all that are complete and are mine
   @UseGuards(JwtAuthGuard)
-  @Get('/complete/test')
-  async findComplete(): Promise<Tether[]> {
-    return this.tethersService.findComplete();
+  @Get('/complete/:tether_created_by')
+  async findComplete(
+    @Param('tether_created_by', ParseUUIDPipe) tether_created_by: string,
+  ): Promise<Tether[]> {
+    return this.tethersService.findComplete(tether_created_by);
   }
 
   // Create a Tether
