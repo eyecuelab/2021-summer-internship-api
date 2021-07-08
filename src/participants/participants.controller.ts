@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
@@ -17,23 +25,30 @@ export class ParticipantsController {
     return this.participantsService.getParticipants();
   }
 
-  // Left Join
+  // Gets all Users that are Participants on a Tether
   @UseGuards(JwtAuthGuard)
   @Get('/tether/:tether_id')
-  getLeftJoin(@Param('tether_id') tether_id: string): Promise<Participant[]> {
+  getLeftJoin(
+    @Param('tether_id', ParseUUIDPipe) tether_id: string,
+  ): Promise<Participant[]> {
     return this.participantsService.getParticipantTetherDetails(tether_id);
   }
 
-  // Left Join User
+  // Gets all Tethers that this User is Participating in
   @UseGuards(JwtAuthGuard)
   @Get('/user/:user_id')
-  getLeftJoinUser(@Param('user_id') user_id: string): Promise<Participant[]> {
+  getLeftJoinUser(
+    @Param('user_id', ParseUUIDPipe) user_id: string,
+  ): Promise<Participant[]> {
     return this.participantsService.getParticipantUserDetails(user_id);
   }
 
+  // Get all Users Participating on one Tether
   @UseGuards(JwtAuthGuard)
   @Get('/alldeets/:tether_id')
-  getFullParticipantDetails(@Param('tether_id') tether_id: string) {
+  getFullParticipantDetails(
+    @Param('tether_id', ParseUUIDPipe) tether_id: string,
+  ): Promise<Participant[]> {
     return this.participantsService.getFullParticipantDetails(tether_id);
   }
 
@@ -42,7 +57,7 @@ export class ParticipantsController {
   async create(
     // @Request() participant_req,
     @Body() createParticipantDto: CreateParticipantDto,
-  ) {
+  ): Promise<Participant[]> {
     this.participantsService.create(createParticipantDto);
     return this.participantsService.getParticipants();
   }

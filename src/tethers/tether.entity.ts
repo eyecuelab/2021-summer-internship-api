@@ -22,23 +22,18 @@ export class Tether {
   @CreateDateColumn()
   tether_opened_on?: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: true })
   tether_completed_on?: Date;
 
   @CreateDateColumn()
   tether_full_on?: Date;
 
-  // @Column('text')
-  // tether_created_by: string;
   @ManyToOne(() => User)
   @JoinColumn()
   tether_created_by: string;
 
   @Column('text')
   tether_created_by_plain: string;
-
-  // @OneToMany(() => User, (user) => user.id)
-  // participant: User[];
 
   @OneToMany(() => Participant, (participant) => participant.tether_id)
   @JoinColumn()

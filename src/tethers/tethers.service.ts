@@ -13,7 +13,6 @@ export class TethersService {
     private tethersRepository: Repository<Tether>,
   ) {}
 
-  // Finds Tether by Tether ID
   async find(tether_id: string) {
     return this.tethersRepository.find({
       where: {
@@ -38,15 +37,6 @@ export class TethersService {
     });
 
     await this.tethersRepository.save(newTether);
-
-    // const participantLink = await this.participantsRepository.create({
-    //   tether_id: newTether.tether_id,
-    //   user_id: newTether.tether_created_by,
-    //   links_total: newTether.tether_timespan,
-    //   links_completed: 0,
-    // });
-
-    // await this.participantsRepository.save(participantLink);
 
     return newTether;
   }

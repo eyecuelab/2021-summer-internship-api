@@ -33,13 +33,6 @@ export class UsersController {
     return this.usersService.findOne({ id });
   }
 
-  // Get One User's tethers by ID
-  // @UseGuards(JwtAuthGuard)
-  // @Get(':id/tethers')
-  // async findTethersById(@Param('id', ParseUUIDPipe) id: string) {
-  //   return this.usersService.findTethersById(id);
-  // }
-
   // Edit One User by Id
   @UseGuards(JwtAuthGuard)
   @Patch(':id')

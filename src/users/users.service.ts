@@ -39,21 +39,6 @@ export class UsersService {
     });
   }
 
-  // async findTethersById(id: string): Promise<Tether[]> {
-  //   const query = TethersService.find({
-  //     where: {
-  //       tether_created_by: id,
-  //     },
-  //   });
-
-  //   try {
-  //     const tethers = await query;
-  //     return tethers;
-  //   } catch (error) {
-  //     throw new InternalServerErrorException();
-  //   }
-  // }
-
   async findByUsername(username: string): Promise<User | undefined> {
     return this.usersRepository.findOne({
       where: {
@@ -65,7 +50,6 @@ export class UsersService {
   async getAllUsers(): Promise<User[]> {
     const user = await this.usersRepository
       .createQueryBuilder('users')
-      // .leftJoinAndSelect('users.tethers', 'tethers')
       .getMany();
     return user;
   }
