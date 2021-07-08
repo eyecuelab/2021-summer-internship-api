@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateParticipantDto {
   @ApiProperty()
@@ -11,9 +11,4 @@ export class CreateParticipantDto {
   @IsNotEmpty()
   @IsString()
   user_id: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  links_total: number;
 }

@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
   OneToMany,
   JoinColumn,
 } from 'typeorm';
@@ -27,7 +28,10 @@ export class Tether {
   @CreateDateColumn()
   tether_full_on?: Date;
 
-  @Column('text')
+  // @Column('text')
+  // tether_created_by: string;
+  @ManyToOne(() => User)
+  @JoinColumn()
   tether_created_by: string;
 
   @Column('text')
