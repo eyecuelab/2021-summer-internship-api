@@ -73,4 +73,13 @@ export class TethersService {
       throw new NotFoundException(`Tether with ID ${tether_id} not found.`);
     }
   }
+
+  async completeTether(tether_id: string): Promise<Tether> {
+    const tetherToUpdate = await this.tethersRepository.findOne(tether_id);
+    tetherToUpdate.tether_completed_on = new Date();
+
+    await this.tethersRepository.save(tetherToUpdate);
+    console.log(tetherToUpdate.tether_completed_on);
+    return tetherToUpdate;
+  }
 }

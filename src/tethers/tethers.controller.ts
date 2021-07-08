@@ -58,6 +58,15 @@ export class TethersController {
     return this.tethersService.updateOne(tether_id, userParams);
   }
 
+  // Update Complete Date
+  @UseGuards(JwtAuthGuard)
+  @Patch('/complete/:tether_id')
+  async updateCompleteDate(
+    @Param('tether_id', ParseUUIDPipe) tether_id: string,
+  ) {
+    return this.tethersService.completeTether(tether_id);
+  }
+
   // Delete Tether by ID
   @UseGuards(JwtAuthGuard)
   @Delete(':tether_id')

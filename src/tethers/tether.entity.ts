@@ -7,6 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  // UpdateDateColumn,
 } from 'typeorm';
 import { TetherDuration } from './tether-duration.enum';
 import { Participant } from 'src/participants/participant.entity';
@@ -22,10 +23,16 @@ export class Tether {
   @CreateDateColumn()
   tether_opened_on?: Date;
 
-  @CreateDateColumn({ nullable: true })
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
   tether_completed_on?: Date;
 
-  @CreateDateColumn()
+  @Column({
+    nullable: true,
+    type: 'timestamptz',
+  })
   tether_full_on?: Date;
 
   @ManyToOne(() => User)
