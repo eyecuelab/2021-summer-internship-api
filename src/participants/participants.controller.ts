@@ -29,7 +29,7 @@ export class ParticipantsController {
   // Gets all Users that are Participants on a Tether
   @UseGuards(JwtAuthGuard)
   @Get('/tether/:tether_id')
-  getLeftJoin(
+  getParticipantTetherDetails(
     @Param('tether_id', ParseUUIDPipe) tether_id: string,
   ): Promise<Participant[]> {
     return this.participantsService.getParticipantTetherDetails(tether_id);
@@ -38,7 +38,7 @@ export class ParticipantsController {
   // Gets all Tethers that this User is Participating in
   @UseGuards(JwtAuthGuard)
   @Get('/user/:user_id')
-  getLeftJoinUser(
+  getParticipantUserDetails(
     @Param('user_id', ParseUUIDPipe) user_id: string,
   ): Promise<Participant[]> {
     return this.participantsService.getParticipantUserDetails(user_id);
@@ -51,6 +51,15 @@ export class ParticipantsController {
     @Param('tether_id', ParseUUIDPipe) tether_id: string,
   ): Promise<Participant[]> {
     return this.participantsService.getFullParticipantDetails(tether_id);
+  }
+
+  // Get count of a User's Tethers
+  @UseGuards(JwtAuthGuard)
+  @Get('/count/:user_id')
+  countParticipatingTethers(
+    @Param('user_id', ParseUUIDPipe) user_id: string,
+  ): Promise<number> {
+    return this.participantsService.countParticipatingTethers(user_id);
   }
 
   @UseGuards(JwtAuthGuard)

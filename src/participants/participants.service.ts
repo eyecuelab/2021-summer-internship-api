@@ -115,4 +115,15 @@ export class ParticipantsService {
       await this.participantsRepository.save(thisParticipantLink);
     }
   }
+
+  async countParticipatingTethers(user_id): Promise<number> {
+    const query = await this.participantsRepository
+      .createQueryBuilder('participants')
+      .leftJoinAndSelect('participants.tether_id', 'tethers')
+      .where('participants.user_id = :user_id', { user_id: user_id })
+      .andWhere('tether_completed_on IS null')
+      .getMany();
+
+    return query.length;
+  }
 }
