@@ -97,4 +97,12 @@ export class TethersService {
     });
     return hasDate;
   }
+
+  async countComplete(created_by: string): Promise<number> {
+    const query = await this.tethersRepository.find({
+      tether_completed_on: MoreThan('1980-01-01 00:00:01.000000'),
+      tether_created_by: created_by,
+    });
+    return query.length;
+  }
 }

@@ -47,6 +47,15 @@ export class TethersController {
     return this.tethersService.findComplete(tether_created_by);
   }
 
+  // Get the number of completed tethers that are mine
+  @UseGuards(JwtAuthGuard)
+  @Get('/count/complete/:tether_created_by')
+  async countComplete(
+    @Param('tether_created_by', ParseUUIDPipe) tether_created_by: string,
+  ): Promise<number> {
+    return this.tethersService.countComplete(tether_created_by);
+  }
+
   // Create a Tether
   @UseGuards(JwtAuthGuard)
   @Post()
