@@ -14,6 +14,8 @@ export class ParticipantsService {
   async getParticipants(): Promise<Participant[]> {
     const participants = await this.participantsRepository
       .createQueryBuilder('participants')
+      .leftJoinAndSelect('participants.user_id', 'users')
+      .leftJoinAndSelect('participants.tether_id', 'tethers')
       .getMany();
     return participants;
   }
