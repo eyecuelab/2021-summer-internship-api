@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTetherDto } from './dto/createTether.dto';
-import { MoreThan, Repository } from 'typeorm';
+import { IsNull, MoreThan, Repository } from 'typeorm';
 import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
 import { UpdateTetherDto } from './dto/updateTether.dto';
@@ -93,6 +93,14 @@ export class TethersService {
   async findComplete(created_by: string): Promise<Tether[] | undefined> {
     const hasDate = await this.tethersRepository.find({
       tether_completed_on: MoreThan('1980-01-01 00:00:01.000000'),
+      tether_created_by: created_by,
+    });
+    return hasDate;
+  }
+
+  async findIncomplete(created_by: string): Promise<Tether[] | undefined> {
+    const hasDate = await this.tethersRepository.find({
+      tether_completed_on: IsNull(),
       tether_created_by: created_by,
     });
     return hasDate;

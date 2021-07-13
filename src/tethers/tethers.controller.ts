@@ -47,6 +47,15 @@ export class TethersController {
     return this.tethersService.findComplete(tether_created_by);
   }
 
+  // Get all that are incomplete and are mine
+  @UseGuards(JwtAuthGuard)
+  @Get('/in/complete/:tether_created_by')
+  async findIncomplete(
+    @Param('tether_created_by', ParseUUIDPipe) tether_created_by: string,
+  ): Promise<Tether[]> {
+    return this.tethersService.findIncomplete(tether_created_by);
+  }
+
   // Get the number of completed tethers that are mine
   @UseGuards(JwtAuthGuard)
   @Get('/count/complete/:tether_created_by')

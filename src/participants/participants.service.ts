@@ -64,6 +64,7 @@ export class ParticipantsService {
       .createQueryBuilder('participants')
       .leftJoinAndSelect('participants.tether_id', 'tethers')
       .where('participants.user_id = :user_id', { user_id: user_id })
+      .andWhere('tethers.tether_completed_on is null')
       .getMany();
 
     return query;
