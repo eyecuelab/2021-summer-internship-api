@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
+import { UpdateParticipantDto } from './dto/updateParticipant.dto';
 import { Participant } from './participant.entity';
 
 @Injectable()
@@ -20,10 +21,10 @@ export class ParticipantsService {
     return participants;
   }
 
-  async find(participants_id: string): Promise<Participant[]> {
+  async find(participant_id: string) {
     return this.participantsRepository.find({
       where: {
-        id: participants_id,
+        participant_id: participant_id,
       },
     });
   }
@@ -84,7 +85,6 @@ export class ParticipantsService {
     const newParticipantLink = await this.participantsRepository.create({
       ...participantData,
       links_completed: 0,
-      links_total: 10,
     });
 
     await this.participantsRepository.save(newParticipantLink);
@@ -93,16 +93,20 @@ export class ParticipantsService {
 
   // Add one increment
   // IN a perfect world, this will add or subtract
-  async addIncrement(link_id): Promise<void> {
-    const thisParticipantLink = await this.participantsRepository.findOne(
-      link_id,
-    );
+  async addIncrement(id: string): Promise<Participant> {
+    const thisParticipantLink = await this.participantsRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
 
     if (thisParticipantLink.links_completed < thisParticipantLink.links_total) {
       thisParticipantLink.links_completed =
         thisParticipantLink.links_completed + 1;
       await this.participantsRepository.save(thisParticipantLink);
     }
+
+    return thisParticipantLink;
   }
 
   // Subtract increment

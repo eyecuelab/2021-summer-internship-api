@@ -21,9 +21,9 @@ export class Participant {
   @JoinColumn()
   user_id: string;
 
-  @Column({ nullable: false })
+  @Column('int')
   links_total: number;
 
-  @Column({ nullable: false })
+  @Column('int')
   links_completed: number;
 }
