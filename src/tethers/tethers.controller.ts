@@ -65,6 +65,12 @@ export class TethersController {
     return this.tethersService.countComplete(tether_created_by);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('/recent/recent/recent/recent')
+  async getRecent(): Promise<Tether[]> {
+    return this.tethersService.getRecent();
+  }
+
   // Create a Tether
   @UseGuards(JwtAuthGuard)
   @Post()

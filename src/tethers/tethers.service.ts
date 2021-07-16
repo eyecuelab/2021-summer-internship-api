@@ -113,4 +113,12 @@ export class TethersService {
     });
     return query.length;
   }
+
+  async getRecent(): Promise<Tether[]> {
+    const yesterday = new Date(Date.now() - 86400000);
+    const query = await this.tethersRepository.find({
+      tether_completed_on: MoreThan(yesterday),
+    });
+    return query;
+  }
 }
