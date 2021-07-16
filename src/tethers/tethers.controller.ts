@@ -29,15 +29,6 @@ export class TethersController {
     return this.tethersService.getAllTethers();
   }
 
-  // Get one Tether by ID
-  @UseGuards(JwtAuthGuard)
-  @Get(':tether_id')
-  async findOne(
-    @Param('tether_id', ParseUUIDPipe) tether_id: string,
-  ): Promise<Tether[] | undefined> {
-    return this.tethersService.find(tether_id);
-  }
-
   // Get all that are complete and are mine
   @UseGuards(JwtAuthGuard)
   @Get('/complete/:tether_created_by')
@@ -47,26 +38,8 @@ export class TethersController {
     return this.tethersService.findComplete(tether_created_by);
   }
 
-  // Get all that are incomplete and are mine
   @UseGuards(JwtAuthGuard)
-  @Get('/in/complete/:tether_created_by')
-  async findIncomplete(
-    @Param('tether_created_by', ParseUUIDPipe) tether_created_by: string,
-  ): Promise<Tether[]> {
-    return this.tethersService.findIncomplete(tether_created_by);
-  }
-
-  // Get the number of completed tethers that are mine
-  @UseGuards(JwtAuthGuard)
-  @Get('/count/complete/:tether_created_by')
-  async countComplete(
-    @Param('tether_created_by', ParseUUIDPipe) tether_created_by: string,
-  ): Promise<number> {
-    return this.tethersService.countComplete(tether_created_by);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/recent/recent/recent/recent')
+  @Get('/recent')
   async getRecent(): Promise<Tether[]> {
     return this.tethersService.getRecent();
   }

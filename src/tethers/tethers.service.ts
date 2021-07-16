@@ -1,28 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTetherDto } from './dto/createTether.dto';
-import { IsNull, MoreThan, Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { Tether } from './tether.entity';
 import { User } from '../users/user.entity';
 import { UpdateTetherDto } from './dto/updateTether.dto';
-import { Participant } from 'src/participants/participant.entity';
+import { ParticipantsService } from 'src/participants/participants.service';
 
 @Injectable()
 export class TethersService {
   constructor(
     @InjectRepository(Tether)
     private tethersRepository: Repository<Tether>,
-    @InjectRepository(Participant)
-    private participantsRepository: Repository<Participant>,
+    private readonly participantsService: ParticipantsService,
   ) {}
-
-  async find(tether_id: string) {
-    return this.tethersRepository.find({
-      where: {
-        tether_id: tether_id,
-      },
-    });
-  }
 
   async getAllTethers(): Promise<Tether[]> {
     const tethers = await this.tethersRepository
@@ -41,13 +32,12 @@ export class TethersService {
 
     await this.tethersRepository.insert(newTether);
 
-    const newParticipantLink = await this.participantsRepository.create({
+    await this.participantsService.create({
       tether_id: newTether.tether_id,
       user_id: newTether.tether_created_by,
       links_total: newTether.tether_timespan,
-      links_completed: 0,
     });
-    await this.participantsRepository.insert(newParticipantLink);
+
     return newTether;
   }
 
@@ -96,22 +86,6 @@ export class TethersService {
       tether_created_by: created_by,
     });
     return hasDate;
-  }
-
-  async findIncomplete(created_by: string): Promise<Tether[] | undefined> {
-    const hasDate = await this.tethersRepository.find({
-      tether_completed_on: IsNull(),
-      tether_created_by: created_by,
-    });
-    return hasDate;
-  }
-
-  async countComplete(created_by: string): Promise<number> {
-    const query = await this.tethersRepository.find({
-      tether_completed_on: MoreThan('1980-01-01 00:00:01.000000'),
-      tether_created_by: created_by,
-    });
-    return query.length;
   }
 
   async getRecent(): Promise<Tether[]> {

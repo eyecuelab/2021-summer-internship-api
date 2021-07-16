@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
-import { UpdateParticipantDto } from './dto/updateParticipant.dto';
 import { Participant } from './participant.entity';
 
 @Injectable()
@@ -21,37 +20,10 @@ export class ParticipantsService {
     return participants;
   }
 
-  async find(participant_id: string) {
-    return this.participantsRepository.find({
-      where: {
-        participant_id: participant_id,
-      },
-    });
-  }
-
-  async countParticipants(tether_id: string): Promise<number> {
-    const query = await this.participantsRepository
-      .createQueryBuilder('participants')
-      .where('participants.tether_id = :tether_id', { tether_id: tether_id })
-      .getMany();
-
-    return query.length;
-  }
-
   async getFullParticipantDetails(tether_id: string) {
     const query = await this.participantsRepository
       .createQueryBuilder('participants')
       .leftJoinAndSelect('participants.tether_id', 'tethers')
-      .leftJoinAndSelect('participants.user_id', 'users')
-      .where('participants.tether_id = :tether_id', { tether_id: tether_id })
-      .getMany();
-
-    return query;
-  }
-
-  async getParticipantTetherDetails(tether_id: string) {
-    const query = await this.participantsRepository
-      .createQueryBuilder('participants')
       .leftJoinAndSelect('participants.user_id', 'users')
       .where('participants.tether_id = :tether_id', { tether_id: tether_id })
       .getMany();
@@ -70,18 +42,6 @@ export class ParticipantsService {
     return query;
   }
 
-  async checkExistingLink(
-    tether_id: string,
-    user_id: string,
-  ): Promise<Participant[] | undefined> {
-    return this.participantsRepository.find({
-      where: {
-        tether_id: tether_id,
-        user_id: user_id,
-      },
-    });
-  }
-
   async create(participantData: CreateParticipantDto): Promise<Participant> {
     const newParticipantLink = await this.participantsRepository.create({
       ...participantData,
@@ -92,8 +52,6 @@ export class ParticipantsService {
     return newParticipantLink;
   }
 
-  // Add one increment
-  // IN a perfect world, this will add or subtract
   async addIncrement(id: string): Promise<Participant> {
     const thisParticipantLink = await this.participantsRepository.findOne({
       where: {
@@ -108,29 +66,5 @@ export class ParticipantsService {
     }
 
     return thisParticipantLink;
-  }
-
-  // Subtract increment
-  async subIncrement(link_id): Promise<void> {
-    const thisParticipantLink = await this.participantsRepository.findOne(
-      link_id,
-    );
-
-    if (thisParticipantLink.links_completed > 0) {
-      thisParticipantLink.links_completed =
-        thisParticipantLink.links_completed - 1;
-      await this.participantsRepository.save(thisParticipantLink);
-    }
-  }
-
-  async countParticipatingTethers(user_id): Promise<number> {
-    const query = await this.participantsRepository
-      .createQueryBuilder('participants')
-      .leftJoinAndSelect('participants.tether_id', 'tethers')
-      .where('participants.user_id = :user_id', { user_id: user_id })
-      .andWhere('tether_completed_on IS null')
-      .getMany();
-
-    return query.length;
   }
 }
