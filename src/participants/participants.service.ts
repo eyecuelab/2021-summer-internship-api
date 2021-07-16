@@ -42,6 +42,16 @@ export class ParticipantsService {
     return query;
   }
 
+  async getParticipantTetherDetails(tether_id: string) {
+    const query = await this.participantsRepository
+      .createQueryBuilder('participants')
+      .leftJoinAndSelect('participants.user_id', 'users')
+      .where('participants.tether_id = :tether_id', { tether_id: tether_id })
+      .getMany();
+
+    return query;
+  }
+
   async create(participantData: CreateParticipantDto): Promise<Participant> {
     const newParticipantLink = await this.participantsRepository.create({
       ...participantData,

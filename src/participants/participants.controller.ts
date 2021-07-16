@@ -35,6 +35,15 @@ export class ParticipantsController {
     return this.participantsService.getParticipantUserDetails(user_id);
   }
 
+  // Gets all Users that are Participants on a Tether
+  @UseGuards(JwtAuthGuard)
+  @Get('/tether/:tether_id')
+  getParticipantTetherDetails(
+    @Param('tether_id', ParseUUIDPipe) tether_id: string,
+  ): Promise<Participant[]> {
+    return this.participantsService.getParticipantTetherDetails(tether_id);
+  }
+
   // Get all Users Participating on one Tether
   @UseGuards(JwtAuthGuard)
   @Get('/alldeets/:tether_id')
