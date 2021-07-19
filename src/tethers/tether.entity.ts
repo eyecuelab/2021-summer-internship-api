@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { TetherDuration } from './tether-duration.enum';
 import { Participant } from 'src/participants/participant.entity';
+import { TetherCategory } from './tether-category.enum';
 
 @Entity('tether')
 export class Tether {
@@ -61,6 +62,9 @@ export class Tether {
   @Column()
   tether_frequency: TetherDuration;
 
-  @Column()
+  @Column('int')
   tether_timespan: number;
+
+  @Column({ nullable: true })
+  tether_category: TetherCategory;
 }

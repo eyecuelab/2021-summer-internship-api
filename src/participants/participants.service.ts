@@ -49,7 +49,23 @@ export class ParticipantsService {
       .where('participants.tether_id = :tether_id', { tether_id: tether_id })
       .getMany();
 
+    const findThis = await this.getTetherIdFromParticipantId(tether_id);
+    console.log(findThis);
     return query;
+  }
+
+  async getTetherIdFromParticipantId(participant_id: string) {
+    const tetherFromParticipant = await this.participantsRepository.findOne({
+      join: {
+        alias: 'participants',
+        innerJoin: { users: 'participants.user_id' },
+      },
+      where: {
+        id: participant_id,
+      },
+    });
+
+    console.log(tetherFromParticipant);
   }
 
   async create(participantData: CreateParticipantDto): Promise<Participant> {
