@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
 import { Participant } from './participant.entity';
-import { all } from 'lodash';
 
 @Injectable()
 export class ParticipantsService {
