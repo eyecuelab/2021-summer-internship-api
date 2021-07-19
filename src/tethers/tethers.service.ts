@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTetherDto } from './dto/createTether.dto';
 import { MoreThan, Repository } from 'typeorm';
@@ -65,6 +69,13 @@ export class TethersService {
   }
 
   async completeTether(tether_id: string): Promise<Tether> {
+    const canCompleteTether =
+      await this.participantsService.getCanCompleteTether(tether_id);
+    if (!canCompleteTether) {
+      throw new UnauthorizedException(
+        'All participants must have completed all links',
+      );
+    }
     const tetherToUpdate = await this.tethersRepository.findOne(tether_id);
     tetherToUpdate.tether_completed_on = new Date();
 

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateParticipantDto } from './dto/createParticipant.dto';
 import { Participant } from './participant.entity';
+import { all } from 'lodash';
 
 @Injectable()
 export class ParticipantsService {
@@ -76,5 +77,17 @@ export class ParticipantsService {
     }
 
     return thisParticipantLink;
+  }
+
+  async getCanCompleteTether(tether_id: string): Promise<boolean> {
+    const participants = await this.participantsRepository.find({
+      where: {
+        tether_id: tether_id,
+      },
+    });
+
+    return participants.every(
+      (participant) => participant.links_completed === participant.links_total,
+    );
   }
 }
