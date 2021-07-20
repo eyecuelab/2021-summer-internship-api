@@ -37,7 +37,7 @@ export class ParticipantsService {
       .leftJoinAndSelect('participants.tether_id', 'tethers')
       .where('participants.user_id = :user_id', { user_id: user_id })
       .andWhere('tethers.tether_completed_on is null')
-      // .orderBy('tethers.tether_opened_on', 'DESC')
+      .orderBy('tethers.tether_opened_on', 'DESC')
       .getMany();
 
     return query;
