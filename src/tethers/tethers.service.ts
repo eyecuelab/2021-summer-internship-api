@@ -55,7 +55,7 @@ export class TethersService {
     }
 
     const tetherToUpdate = await this.tethersRepository.findOne(tether_id);
-    tetherToUpdate.tether_name = `${tetherData.tether_activity} - ${tetherData.tether_duration} ${tetherData.tether_duration_noun} a ${tetherData.tether_frequency}, ${tetherData.tether_timespan} times.`;
+    // tetherToUpdate.tether_name = `${tetherData.tether_activity} - ${tetherData.tether_duration} ${tetherData.tether_duration_noun} a ${tetherData.tether_frequency}, ${tetherData.tether_timespan} times.`;
     await this.tethersRepository.save(tetherToUpdate);
     return tetherToUpdate;
   }

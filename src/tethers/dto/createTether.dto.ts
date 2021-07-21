@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsNumber, IsEnum } from 'class-validator';
-import { TetherDuration } from '../tether-duration.enum';
+import { TetherFrequency } from '../tether-frequency.enum';
 
 export class CreateTetherDto {
   @ApiProperty()
@@ -19,8 +19,8 @@ export class CreateTetherDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsEnum(TetherDuration)
-  tether_frequency: TetherDuration;
+  @IsEnum(TetherFrequency)
+  tether_frequency: TetherFrequency;
 
   @ApiProperty()
   @IsNotEmpty()
