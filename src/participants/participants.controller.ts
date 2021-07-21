@@ -53,6 +53,7 @@ export class ParticipantsController {
     return this.participantsService.getFullParticipantDetails(tether_id);
   }
 
+  // Create a Participant record
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
@@ -62,6 +63,7 @@ export class ParticipantsController {
     return this.participantsService.getParticipants();
   }
 
+  // Increment a Tether link
   @UseGuards(JwtAuthGuard)
   @Patch('/addIncrement/:participant_id')
   async addIncrement(
