@@ -1,5 +1,4 @@
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as chalk from 'chalk';
@@ -25,13 +24,13 @@ async function bootstrap() {
 
   SwaggerModule.setup('docs', app, document);
 
-  const configService = app.get(ConfigService);
-  const port = configService.get('PORT');
-  await app.listen(port);
+  await app.listen(process.env.PORT || 8000);
   console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'develop') {
     console.log(
-      chalk.black.bgYellow(`\n~~ Api running at http://localhost:${port} ~~`),
+      chalk.black.bgYellow(
+        `\n~~ Api running at http://localhost:${process.env.PORT || 8000} ~~`,
+      ),
     );
   }
 }
