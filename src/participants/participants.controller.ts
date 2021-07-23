@@ -26,13 +26,22 @@ export class ParticipantsController {
     return this.participantsService.getParticipants();
   }
 
-  // Gets all Tethers that this User is Participating in
+  // Gets all Incomplete Tethers that this User is Participating in
   @UseGuards(JwtAuthGuard)
   @Get('/user/:user_id')
   getParticipantUserDetails(
     @Param('user_id', ParseUUIDPipe) user_id: string,
   ): Promise<Participant[]> {
     return this.participantsService.getParticipantUserDetails(user_id);
+  }
+
+  // Gets all Completed Tethers that this User is Participating in
+  @UseGuards(JwtAuthGuard)
+  @Get('/user/:user_id/complete')
+  getParticipantUserDetailsComplete(
+    @Param('user_id', ParseUUIDPipe) user_id: string,
+  ): Promise<Participant[]> {
+    return this.participantsService.getParticipantUserDetailsComplete(user_id);
   }
 
   // Gets all Users that are Participants on a Tether

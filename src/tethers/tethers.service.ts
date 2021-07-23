@@ -99,7 +99,7 @@ export class TethersService {
   }
 
   async getRecent(): Promise<Tether[]> {
-    const yesterday = new Date(Date.now() - 86400000);
+    const yesterday = new Date(Date.now() - 172800000);
     const query = await this.tethersRepository.find({
       tether_completed_on: MoreThan(yesterday),
     });
