@@ -7,9 +7,8 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
-  // UpdateDateColumn,
 } from 'typeorm';
-import { TetherDuration } from './tether-duration.enum';
+import { TetherFrequency } from './tether-frequency.enum';
 import { Participant } from 'src/participants/participant.entity';
 import { TetherCategory } from './tether-category.enum';
 
@@ -60,7 +59,7 @@ export class Tether {
   tether_duration_noun: string;
 
   @Column()
-  tether_frequency: TetherDuration;
+  tether_frequency: TetherFrequency;
 
   @Column('int')
   tether_timespan: number;

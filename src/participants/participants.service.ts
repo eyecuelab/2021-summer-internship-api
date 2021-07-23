@@ -37,9 +37,20 @@ export class ParticipantsService {
       .leftJoinAndSelect('participants.tether_id', 'tethers')
       .where('participants.user_id = :user_id', { user_id: user_id })
       .andWhere('tethers.tether_completed_on is null')
-      // .orderBy('tethers.tether_opened_on', 'DESC')
+      .orderBy('tethers.tether_opened_on', 'DESC')
       .getMany();
 
+    return query;
+  }
+
+  async getParticipantUserDetailsComplete(user_id: string) {
+    const query = await this.participantsRepository
+      .createQueryBuilder('participants')
+      .leftJoinAndSelect('participants.tether_id', 'tethers')
+      .where('participants.user_id = :user_id', { user_id: user_id })
+      .andWhere('tethers.tether_completed_on is not null')
+      .orderBy('tethers.tether_opened_on', 'DESC')
+      .getMany();
     return query;
   }
 

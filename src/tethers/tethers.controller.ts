@@ -38,6 +38,7 @@ export class TethersController {
     return this.tethersService.findComplete(tether_created_by);
   }
 
+  // Get Tethers completed in the last 24 hours
   @UseGuards(JwtAuthGuard)
   @Get('/recent')
   async getRecent(): Promise<Tether[]> {

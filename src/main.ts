@@ -15,9 +15,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Api Example')
-    .setDescription(
-      'Simple api with authentication and related resource for saving and rating NASA Astronomy Pictures of the Day',
-    )
+    .setDescription('Routes for Tether - Reach Your Goals Together')
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);

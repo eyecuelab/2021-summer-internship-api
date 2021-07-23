@@ -55,7 +55,6 @@ export class TethersService {
     }
 
     const tetherToUpdate = await this.tethersRepository.findOne(tether_id);
-    tetherToUpdate.tether_name = `${tetherData.tether_activity} - ${tetherData.tether_duration} ${tetherData.tether_duration_noun} a ${tetherData.tether_frequency}, ${tetherData.tether_timespan} times.`;
     await this.tethersRepository.save(tetherToUpdate);
     return tetherToUpdate;
   }
@@ -100,7 +99,7 @@ export class TethersService {
   }
 
   async getRecent(): Promise<Tether[]> {
-    const yesterday = new Date(Date.now() - 86400000);
+    const yesterday = new Date(Date.now() - 172800000);
     const query = await this.tethersRepository.find({
       tether_completed_on: MoreThan(yesterday),
     });
