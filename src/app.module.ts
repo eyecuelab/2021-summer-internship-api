@@ -5,7 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { RatingsModule } from './ratings/ratings.module';
+import { TethersModule } from './tethers/tethers.module';
+import { ParticipantsModule } from './participants/participants.module';
 
 @Module({
   imports: [
@@ -26,13 +27,14 @@ import { RatingsModule } from './ratings/ratings.module';
             ? 'test-test'
             : configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{ .ts,.js}'],
-        autoLoadEntities: process.env.NODE_ENV === 'test',
-        synchronize: process.env.NODE_ENV === 'test',
+        autoLoadEntities: true,
+        synchronize: true,
       }),
     }),
     AuthModule,
     UsersModule,
-    RatingsModule,
+    TethersModule,
+    ParticipantsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

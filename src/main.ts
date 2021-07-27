@@ -1,5 +1,4 @@
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as chalk from 'chalk';
@@ -12,23 +11,24 @@ async function bootstrap() {
   app.use(helmet());
   app.enableCors();
 
+  // OPEN API Docs
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Api Example')
-    .setDescription(
-      'Simple api with authentication and related resource for saving and rating NASA Astronomy Pictures of the Day',
-    )
+    .setDescription('Routes for Tether - Reach Your Goals Together')
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+
   SwaggerModule.setup('docs', app, document);
-  const configService = app.get(ConfigService);
-  const port = configService.get('PORT');
-  await app.listen(port);
+
+  await app.listen(process.env.PORT || 8000);
   console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'develop') {
     console.log(
-      chalk.black.bgYellow(`\n~~ Api running at http://localhost:${port} ~~`),
+      chalk.black.bgYellow(
+        `\n~~ Api running at http://localhost:${process.env.PORT || 8000} ~~`,
+      ),
     );
   }
 }

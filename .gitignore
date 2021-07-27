@@ -41,3 +41,6 @@ lerna-debug.log*
 
 # eslint
 .eslintcache
+
+# miscellaneous
+yarn.lock

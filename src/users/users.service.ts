@@ -22,15 +22,36 @@ export class UsersService {
     return user;
   }
 
-  async findByUsername(username: string) {
+  async findById(id: string) {
     return this.usersRepository.findOne({
       where: {
-        username,
+        id: id,
       },
     });
   }
+
+  async findByUsername(username: string): Promise<User | undefined> {
+    return this.usersRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    const user = await this.usersRepository
+      .createQueryBuilder('users')
+      .getMany();
+    return user;
+  }
+
   async create(userData: CreateUserDto) {
-    const newUser = await this.usersRepository.create(userData);
+    const newUser = await this.usersRepository.create({
+      ...userData,
+      tethers_ongoing: 0,
+      tethers_completed: 0,
+      xp: 0,
+    });
     await this.usersRepository.save(newUser);
     return newUser;
   }

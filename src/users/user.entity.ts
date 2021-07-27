@@ -1,11 +1,12 @@
-import { Rating } from '../ratings/rating.entity';
+import { Tether } from '../tethers/tether.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  OneToMany,
+  ManyToMany,
   BeforeInsert,
+  JoinTable,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -17,6 +18,9 @@ export class User {
   @Column({ nullable: false, unique: true })
   username: string;
 
+  @Column({ nullable: false, unique: true })
+  email: string;
+
   @Column({ nullable: false })
   password: string;
 
@@ -25,15 +29,30 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  @Column({ nullable: false, unique: true })
-  email: string;
+  @ManyToMany(() => Tether, (tether) => tether.participant_id, {
+    cascade: true,
+  })
+  @JoinTable()
+  active_tethers: Tether[];
+
+  @ManyToMany(() => Tether, (tether) => tether.invitees, {
+    cascade: true,
+  })
+  @JoinTable()
+  pending_tethers: Tether[];
+
+  @Column({ nullable: true })
+  tethers_ongoing: number;
+
+  @Column({ nullable: true })
+  tethers_completed: number;
 
   @CreateDateColumn()
-  created_at?: Date;
+  created_on?: Date;
 
   @CreateDateColumn()
-  updated_at?: Date;
+  updated_on?: Date;
 
-  @OneToMany(() => Rating, (rating) => rating.user)
-  ratings: Rating[];
+  @Column({ nullable: true })
+  xp: number;
 }
